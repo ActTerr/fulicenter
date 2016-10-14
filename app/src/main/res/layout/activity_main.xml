@@ -28,7 +28,7 @@
             android:text="分类"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/selector_menu_item_category"
-          />
+            />
 
         <LinearLayout
             android:layout_width="0dp"
