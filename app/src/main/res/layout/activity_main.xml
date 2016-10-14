@@ -11,37 +11,52 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <RadioButton
+            android:id="@+id/rbNewGood"
             style="@style/menu"
             android:text="新品"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/selector_menu_item_new_good"/>
         <RadioButton
+            android:id="@+id/rbBoutique"
             style="@style/menu"
             android:text="精选"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/selector_menu_item_boutique"/>
         <RadioButton
+            android:id="@+id/rbCategory"
             style="@style/menu"
             android:text="分类"
             android:gravity="center_horizontal"
-            android:drawableTop="@drawable/selector_menu_item_category"/>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <RadioButton
-            android:id="@+id/rbCart"
-            style="@style/menu"
-            android:text="购物车"
-            android:gravity="center_horizontal"
-            android:drawableTop="@drawable/selector_menu_item_cart">
+            android:drawableTop="@drawable/selector_menu_item_category"
+          />
 
-        </RadioButton>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rbCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="null"
+                android:drawableTop="@drawable/selector_menu_item_cart"
+                android:text="购物车"
+                android:gravity="center_horizontal"
+                />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:gravity="center"/>
         </LinearLayout>
 
+
+
+
         <RadioButton
+            android:id="@+id/rbPersonal"
             style="@style/menu"
             android:text="用户"
             android:gravity="center_horizontal"
