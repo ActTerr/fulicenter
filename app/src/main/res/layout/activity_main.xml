@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="cn.ucai.fulicenter.activity.MainActivity">
-    <LinearLayout
+    <RadioGroup
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,15 +25,26 @@
             android:text="分类"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/selector_menu_item_category"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
         <RadioButton
+            android:id="@+id/rbCart"
             style="@style/menu"
             android:text="购物车"
             android:gravity="center_horizontal"
-            android:drawableTop="@drawable/selector_menu_item_cart"/>
+            android:drawableTop="@drawable/selector_menu_item_cart">
+
+        </RadioButton>
+        </LinearLayout>
+
         <RadioButton
             style="@style/menu"
             android:text="用户"
             android:gravity="center_horizontal"
             android:drawableTop="@drawable/selector_menu_item_personal_center"/>
-    </LinearLayout>
+    </RadioGroup>
 </RelativeLayout>
