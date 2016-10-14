@@ -5,4 +5,5 @@ package cn.ucai.fulicenter.bean;
  */
 
 public class GoodsDetailsBean {
+
 }
