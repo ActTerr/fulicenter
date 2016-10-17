@@ -14,7 +14,8 @@ import java.lang.reflect.Array;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.fragment.FragmentGoods;
+
+import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rbPersonal) RadioButton rbPersonal;
     int index;
     RadioButton[] btns;
-    FragmentGoods fd;
+    NewGoodsFragment fd;
     Fragment[] fragments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragment() {
         fragments=new Fragment[5];
-        fd=new FragmentGoods();
+        fd=new NewGoodsFragment();
         FragmentManager manger=getSupportFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
         transaction.add(R.id.fragment_container,fd)
