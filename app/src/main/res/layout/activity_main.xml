@@ -40,7 +40,7 @@
                 android:id="@+id/rbCart"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:button="null"
+                android:button="@null"
                 android:drawableTop="@drawable/selector_menu_item_cart"
                 android:text="购物车"
                 android:gravity="center_horizontal"
