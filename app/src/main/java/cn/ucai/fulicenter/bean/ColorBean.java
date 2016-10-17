@@ -1,43 +1,29 @@
 package cn.ucai.fulicenter.bean;
 
-/**
- * Created by mac-yk on 2016/10/13.
- */
+import java.io.Serializable;
 
-public class ColorBean {
+public class ColorBean implements Serializable {
 
     /**
-     * id : 8514
-     * goodsId : 0
-     * colorId : 4
-     * colorName : 绿色
-     * colorCode : #59d85c
-     * colorImg : 201309/1380064997570506166.jpg
-     * colorUrl : https://cn.shopbop.com/alexa-chung-loretta-romper-ag/vp/v=1/1573999972.htm?fm=search-shopbysize&os=false
+     * catId : 262
+     * colorId : 1
+     * colorName : 灰色
+     * colorCode : #959595
+     * colorImg : 121.197.1.20/images/201309/1380064809234134935.jpg
      */
 
-    private int id;
-    private int goodsId;
+    private int catId;
     private int colorId;
     private String colorName;
     private String colorCode;
     private String colorImg;
-    private String colorUrl;
 
-    public int getId() {
-        return id;
+    public int getCatId() {
+        return catId;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(int goodsId) {
-        this.goodsId = goodsId;
+    public void setCatId(int catId) {
+        this.catId = catId;
     }
 
     public int getColorId() {
@@ -72,24 +58,14 @@ public class ColorBean {
         this.colorImg = colorImg;
     }
 
-    public String getColorUrl() {
-        return colorUrl;
-    }
-
-    public void setColorUrl(String colorUrl) {
-        this.colorUrl = colorUrl;
-    }
-
     @Override
     public String toString() {
         return "ColorBean{" +
-                "id=" + id +
-                ", goodsId=" + goodsId +
+                "catId=" + catId +
                 ", colorId=" + colorId +
                 ", colorName='" + colorName + '\'' +
                 ", colorCode='" + colorCode + '\'' +
                 ", colorImg='" + colorImg + '\'' +
-                ", colorUrl='" + colorUrl + '\'' +
                 '}';
     }
 }
