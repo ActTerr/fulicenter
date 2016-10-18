@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.GoodsDetailActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -57,8 +59,6 @@ public class NewGoodsFragment extends Fragment {
         setListener();
         return layout;
     }
-    @OnClick (R.id.rv)
-
 
     private void setListener() {
         setPullUpListener();
