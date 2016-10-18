@@ -19,6 +19,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.L;
 
 /**
  * Created by clawpo on 2016/10/17.
@@ -27,11 +28,23 @@ import cn.ucai.fulicenter.utils.ImageLoader;
 public class GoodsAdapter extends Adapter {
     Context mContext;
     List<NewGoodsBean> mList;
-
+    boolean isMore;
     public GoodsAdapter(Context context, List<NewGoodsBean> list) {
         mContext = context;
         mList = new ArrayList<>();
         mList.addAll(list);
+    }
+    public boolean isMore(){
+        return isMore;
+    }
+    public void setMore(boolean more){
+        this.isMore=more;
+        notifyDataSetChanged();
+    }
+    public int getFootText(){
+       return isMore?R.string.load_more:R.string.no_more;
+
+
     }
 
     @Override
@@ -48,11 +61,14 @@ public class GoodsAdapter extends Adapter {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if(getItemViewType(position)== I.TYPE_FOOTER){
+            FooterViewHolder fv= (FooterViewHolder) holder;
+            fv.mTvFooter.setText(getFootText());
 
         }else{
             GoodsViewHolder vh = (GoodsViewHolder) holder;
             NewGoodsBean goods = mList.get(position);
             ImageLoader.downloadImg(mContext,vh.mIvGoodsThumb,goods.getGoodsThumb());
+
             vh.mTvGoodsName.setText(goods.getGoodsName());
             vh.mTvGoodsPrice.setText(goods.getCurrencyPrice());
         }
