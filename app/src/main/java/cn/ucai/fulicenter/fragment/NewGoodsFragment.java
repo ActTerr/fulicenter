@@ -1,6 +1,5 @@
 package cn.ucai.fulicenter.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,20 +15,18 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.activity.GoodsDetailActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
-import cn.ucai.fulicenter.dao.netDao;
 
+import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
-import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
 
 public class NewGoodsFragment extends Fragment {
@@ -43,8 +40,8 @@ public class NewGoodsFragment extends Fragment {
     MainActivity mContext;
     GoodsAdapter mAdapter;
     ArrayList<NewGoodsBean> mList;
-    GridLayoutManager glm;
     int pageId = 1;
+    GridLayoutManager glm;
 
     @Nullable
     @Override
@@ -65,36 +62,20 @@ public class NewGoodsFragment extends Fragment {
         setPullDownListener();
     }
 
-    private void setPullUpListener() {
-        mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
-            int lastPosition;
+    private void setPullDownListener() {
+        mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-               lastPosition = glm.findLastVisibleItemPosition();
-                if(newState==RecyclerView.SCROLL_STATE_IDLE&&
-                        lastPosition==mAdapter.getItemCount()-1
-                        &&mAdapter.isMore()){
-                    pageId++;
-                    DownloadNewGoods(I.ACTION_PULL_UP);
-                }
-                if (newState!=RecyclerView.SCROLL_STATE_DRAGGING){
-                    mAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                lastPosition=glm.findLastVisibleItemPosition();
-                mSrl.setEnabled(lastPosition==0);
+            public void onRefresh() {
+                mSrl.setRefreshing(true);
+                mTvRefresh.setVisibility(View.VISIBLE);
+                pageId = 1;
+                downloadNewGoods(I.ACTION_PULL_DOWN);
             }
         });
-
     }
 
-    private void DownloadNewGoods(final int action) {
-        netDao.DownloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+    private void downloadNewGoods(final int action) {
+        NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 mSrl.setRefreshing(false);
@@ -103,49 +84,55 @@ public class NewGoodsFragment extends Fragment {
                 L.e("result="+result);
                 if(result!=null && result.length>0){
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
-                    mAdapter.initData(list);
-                    if(action==I.ACTION_DOWNLOAD||action==I.ACTION_PULL_DOWN){
+                    if(action==I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
-                    }else {
-                        mAdapter.notifyDataSetChanged();
+                    }else{
+                        mAdapter.addData(list);
                     }
                     if(list.size()<I.PAGE_SIZE_DEFAULT){
                         mAdapter.setMore(false);
-                    }else {
-                        mAdapter.setMore(false);
                     }
-
+                }else{
+                    mAdapter.setMore(false);
                 }
             }
 
             @Override
             public void onError(String error) {
                 mSrl.setRefreshing(false);
-                mAdapter.setMore(false);
                 mTvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error:"+error);
-
             }
         });
     }
 
-    private void setPullDownListener() {
-        mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+    private void setPullUpListener() {
+        mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onRefresh() {
-                mSrl.setEnabled(true);
-                mSrl.setRefreshing(true);
-                mTvRefresh.setVisibility(View.VISIBLE);
-                pageId=1;
-                DownloadNewGoods(I.ACTION_PULL_DOWN);
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int lastPosition = glm.findLastVisibleItemPosition();
+                if(newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastPosition == mAdapter.getItemCount()-1
+                        && mAdapter.isMore()){
+                    pageId++;
+                    downloadNewGoods(I.ACTION_PULL_UP);
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int firstPosition = glm.findFirstVisibleItemPosition();
+                mSrl.setEnabled(firstPosition==0);
             }
         });
     }
 
     private void initData() {
-        DownloadNewGoods(I.ACTION_DOWNLOAD);
-
+        downloadNewGoods(I.ACTION_DOWNLOAD);
     }
 
     private void initView() {
@@ -159,5 +146,6 @@ public class NewGoodsFragment extends Fragment {
         mRv.setLayoutManager(glm);
         mRv.setHasFixedSize(true);
         mRv.setAdapter(mAdapter);
+        mRv.addItemDecoration(new SpaceItemDecoration(12));
     }
 }

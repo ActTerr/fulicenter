@@ -1,14 +1,10 @@
 package cn.ucai.fulicenter.bean;
 
-/**
- * Created by mac-yk on 2016/10/13.
- */
-
 public class MessageBean {
 
     /**
      * success : true
-     * msg :
+     * msg : 添加收藏成功
      */
 
     private boolean success;

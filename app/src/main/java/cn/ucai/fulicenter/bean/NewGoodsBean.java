@@ -2,7 +2,7 @@ package cn.ucai.fulicenter.bean;
 
 import java.io.Serializable;
 
-public class NewGoodsBean implements Serializable{
+public class NewGoodsBean implements Serializable {
 
     /**
      * id : 1
@@ -22,7 +22,7 @@ public class NewGoodsBean implements Serializable{
      * colorName : 绿色
      * colorCode : #59d85c
      * colorUrl : 1
-     * addTime : 1442389445
+     * addTime : 1442389445    
      */
 
     private int id;

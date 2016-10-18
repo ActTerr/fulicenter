@@ -3,8 +3,6 @@
     package="cn.ucai.fulicenter">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".application.FuLiCenterApplication"
@@ -15,9 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity"></activity>
         <activity android:name=".activity.SplashActivity">
-            <intent-filter
-                android:icon="@mipmap/launcher"
-                android:label="福利社">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />

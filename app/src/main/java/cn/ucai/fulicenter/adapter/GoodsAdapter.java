@@ -1,7 +1,6 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
@@ -15,17 +14,12 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.activity.GoodsDetailActivity;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
-import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
-
-import static java.security.AccessController.getContext;
 
 /**
  * Created by clawpo on 2016/10/17.
@@ -35,22 +29,20 @@ public class GoodsAdapter extends Adapter {
     Context mContext;
     List<NewGoodsBean> mList;
     boolean isMore;
+
     public GoodsAdapter(Context context, List<NewGoodsBean> list) {
         mContext = context;
         mList = new ArrayList<>();
         mList.addAll(list);
     }
-    public boolean isMore(){
+
+    public boolean isMore() {
         return isMore;
     }
-    public void setMore(boolean more){
-        this.isMore=more;
+
+    public void setMore(boolean more) {
+        isMore = more;
         notifyDataSetChanged();
-    }
-    public int getFootText(){
-       return isMore?R.string.load_more:R.string.no_more;
-
-
     }
 
     @Override
@@ -66,22 +58,21 @@ public class GoodsAdapter extends Adapter {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if(getItemViewType(position)== I.TYPE_FOOTER){
-            FooterViewHolder fv= (FooterViewHolder) holder;
-            fv.mTvFooter.setText(getFootText());
-
+        if(getItemViewType(position)==I.TYPE_FOOTER){
+            FooterViewHolder vh = (FooterViewHolder) holder;
+            vh.mTvFooter.setText(getFootString());
         }else{
             GoodsViewHolder vh = (GoodsViewHolder) holder;
             NewGoodsBean goods = mList.get(position);
             ImageLoader.downloadImg(mContext,vh.mIvGoodsThumb,goods.getGoodsThumb());
-
             vh.mTvGoodsName.setText(goods.getGoodsName());
             vh.mTvGoodsPrice.setText(goods.getCurrencyPrice());
             vh.mLayoutGoods.setTag(goods);
-
-
-
         }
+    }
+
+    private int getFootString() {
+        return isMore?R.string.load_more:R.string.no_more;
     }
 
     @Override
@@ -105,7 +96,12 @@ public class GoodsAdapter extends Adapter {
         notifyDataSetChanged();
     }
 
-     class GoodsViewHolder extends ViewHolder{
+    public void addData(ArrayList<NewGoodsBean> list) {
+        mList.addAll(list);
+        notifyDataSetChanged();
+    }
+
+    class GoodsViewHolder extends ViewHolder{
         @BindView(R.id.ivGoodsThumb)
         ImageView mIvGoodsThumb;
         @BindView(R.id.tvGoodsName)
@@ -119,17 +115,11 @@ public class GoodsAdapter extends Adapter {
             super(view);
             ButterKnife.bind(this, view);
         }
-        @OnClick (R.id.layout_goods)
-        public void onEnterGoods(){
-
-            NewGoodsBean goods= (NewGoodsBean) mLayoutGoods.getTag();
-            int goodsId=goods.getId();
-            //mContext.startActivity(new Intent(mContext,GoodsDetailActivity.class)
-                   // .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));
-            MFGT.gotoGoodsDetailActivity(mContext,goods);
-
+        @OnClick(R.id.layout_goods)
+        public void onGoodsItemClick(){
+            NewGoodsBean goods = (NewGoodsBean) mLayoutGoods.getTag();
+            MFGT.gotoGoodsDetailsActivity(mContext,goods);
         }
-
     }
 
     static class FooterViewHolder extends ViewHolder{
