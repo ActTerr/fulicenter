@@ -15,14 +15,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.dao.netDao;
 
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 
@@ -38,6 +41,7 @@ public class NewGoodsFragment extends Fragment {
     MainActivity mContext;
     GoodsAdapter mAdapter;
     ArrayList<NewGoodsBean> mList;
+    GridLayoutManager glm;
     int pageId = 1;
 
     @Nullable
@@ -50,26 +54,98 @@ public class NewGoodsFragment extends Fragment {
         mAdapter = new GoodsAdapter(mContext,mList);
         initView();
         initData();
+        setListener();
         return layout;
     }
+    @OnClick (R.id.rv)
 
-    private void initData() {
 
+    private void setListener() {
+        setPullUpListener();
+        setPullDownListener();
+    }
+
+    private void setPullUpListener() {
+        mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            int lastPosition;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+               lastPosition = glm.findLastVisibleItemPosition();
+                if(newState==RecyclerView.SCROLL_STATE_IDLE&&
+                        lastPosition==mAdapter.getItemCount()-1
+                        &&mAdapter.isMore()){
+                    pageId++;
+                    DownloadNewGoods(I.ACTION_PULL_UP);
+                }
+                if (newState!=RecyclerView.SCROLL_STATE_DRAGGING){
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastPosition=glm.findLastVisibleItemPosition();
+                mSrl.setEnabled(lastPosition==0);
+            }
+        });
+
+    }
+
+    private void DownloadNewGoods(final int action) {
         netDao.DownloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
+                mSrl.setRefreshing(false);
+                mTvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(true);
                 L.e("result="+result);
                 if(result!=null && result.length>0){
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);
+                    if(action==I.ACTION_DOWNLOAD||action==I.ACTION_PULL_DOWN){
+                        mAdapter.initData(list);
+                    }else {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    if(list.size()<I.PAGE_SIZE_DEFAULT){
+                        mAdapter.setMore(false);
+                    }else {
+                        mAdapter.setMore(false);
+                    }
+
                 }
             }
 
             @Override
             public void onError(String error) {
+                mSrl.setRefreshing(false);
+                mAdapter.setMore(false);
+                mTvRefresh.setVisibility(View.GONE);
+                CommonUtils.showShortToast(error);
                 L.e("error:"+error);
+
             }
         });
+    }
+
+    private void setPullDownListener() {
+        mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSrl.setEnabled(true);
+                mSrl.setRefreshing(true);
+                mTvRefresh.setVisibility(View.VISIBLE);
+                pageId=1;
+                DownloadNewGoods(I.ACTION_PULL_DOWN);
+            }
+        });
+    }
+
+    private void initData() {
+        DownloadNewGoods(I.ACTION_DOWNLOAD);
+
     }
 
     private void initView() {
@@ -79,7 +155,7 @@ public class NewGoodsFragment extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        GridLayoutManager glm = new GridLayoutManager(mContext, I.COLUM_NUM);
+        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
         mRv.setLayoutManager(glm);
         mRv.setHasFixedSize(true);
         mRv.setAdapter(mAdapter);
