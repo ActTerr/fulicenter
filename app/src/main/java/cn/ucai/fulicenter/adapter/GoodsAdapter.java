@@ -23,6 +23,7 @@ import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 
 import static java.security.AccessController.getContext;
 
@@ -76,7 +77,10 @@ public class GoodsAdapter extends Adapter {
 
             vh.mTvGoodsName.setText(goods.getGoodsName());
             vh.mTvGoodsPrice.setText(goods.getCurrencyPrice());
-            vh.mLayoutGoods.setTag(goods.getGoodsId());
+            vh.mLayoutGoods.setTag(goods);
+
+
+
         }
     }
 
@@ -118,9 +122,11 @@ public class GoodsAdapter extends Adapter {
         @OnClick (R.id.layout_goods)
         public void onEnterGoods(){
 
-            int goodsId = (int) mLayoutGoods.getTag();
-            mContext.startActivity(new Intent(mContext,GoodsDetailActivity.class)
-                    .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));
+            NewGoodsBean goods= (NewGoodsBean) mLayoutGoods.getTag();
+            int goodsId=goods.getId();
+            //mContext.startActivity(new Intent(mContext,GoodsDetailActivity.class)
+                   // .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));
+            MFGT.gotoGoodsDetailActivity(mContext,goods);
 
         }
 

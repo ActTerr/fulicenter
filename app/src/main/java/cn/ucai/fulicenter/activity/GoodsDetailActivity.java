@@ -1,23 +1,43 @@
 package cn.ucai.fulicenter.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
-import cn.ucai.fulicenter.utils.L;
 
 public class GoodsDetailActivity extends AppCompatActivity {
+
+    @BindView(R.id.goodsName)
+    TextView goodsName;
+    @BindView(R.id.originalPrice)
+    TextView originalPrice;
+    @BindView(R.id.GoodsNameCh)
+    TextView GoodsNameCh;
+    @BindView(R.id.currentPrice)
+    TextView currentPrice;
+    NewGoodsBean goods;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_goods_detail);
-        int goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
+        ButterKnife.bind(this);
+        goods= (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
+        int goodsId=goods.getId();
+        CommonUtils.showShortToast(goodsId + "");
+        initView();
+    }
 
-        CommonUtils.showShortToast(goodsId+"");
-
+    private void initView() {
+        goodsName.setText(goods.getGoodsEnglishName());
+        GoodsNameCh.setText(goods.getGoodsName());
+        currentPrice.setText(goods.getCurrencyPrice());
+        originalPrice.setText(goods.getPromotePrice());
     }
 }
