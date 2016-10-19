@@ -22,7 +22,7 @@ import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.FlowIndicator;
 import cn.ucai.fulicenter.views.SlideAutoLoopView;
 
-public class GoodsDetailActivity extends AppCompatActivity {
+public class GoodsDetailActivity extends BaseActivity {
 
     @BindView(R.id.backClickArea)
     LinearLayout mBackClickArea;
@@ -46,27 +46,28 @@ public class GoodsDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         //setContentView(R.layout.activity_goods_detail);
         setContentView(R.layout.activity_goods_detail);
         ButterKnife.bind(this);
         goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
         goodsId=goods.getGoodsId();
         L.e("details", "goodsid=" + goodsId);
+
         if(goodsId==0){
             finish();
         }
         mContext = this;
-        initView();
-        initData();
-        setListener();
-    }
-
-    private void setListener() {
+        super.onCreate(savedInstanceState);
 
     }
+    @Override
+    protected void setListener() {
 
-    private void initData() {
+    }
+
+    @Override
+    protected void initData() {
         NetDao.downloadGoodsDetail(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
@@ -115,7 +116,8 @@ public class GoodsDetailActivity extends AppCompatActivity {
         return urls;
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
 
     }
 

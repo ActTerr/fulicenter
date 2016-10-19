@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -27,19 +28,19 @@ import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
 import static android.R.attr.action;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BoutiqueFragment extends Fragment {
+public class BoutiqueFragment extends BaseFragment {
 
 
     BoutiqueAdapter mAdapter;
     MainActivity mContext;
     ArrayList<BoutiqueBean> mlist;
-    int pageId;
     LinearLayoutManager llm;
 
     @BindView(R.id.tv_refresh)
@@ -49,51 +50,41 @@ public class BoutiqueFragment extends Fragment {
     @BindView(R.id.srl)
     SwipeRefreshLayout mSrl;
 
-
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        L.e("successboutiquefragment");
         View view = inflater.inflate(R.layout.fragment_goods, container, false);
         ButterKnife.bind(this, view);
         mContext = (MainActivity) getContext();
         mlist = new ArrayList<>();
         mAdapter = new BoutiqueAdapter(mlist, mContext);
-        initView();
-        initData();
-        setListener();
+        super.onCreateView(inflater,container,savedInstanceState);
         return view;
     }
-
-    private void initData() {
-        downloadBoutique(I.ACTION_DOWNLOAD);
+    @Override
+    protected void initData() {
+        downloadBoutique();
     }
-
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullDownListener();
         setPullUpListener();
     }
 
-    private void downloadBoutique(final int action) {
+    private void downloadBoutique() {
         NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
 
                 mSrl.setRefreshing(false);
                 mTvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(true);
                 L.e("result="+result);
-                if(result!=null && result.length>0){
+                if(result!=null && result.length>0) {
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                    if(action==I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
-                        mAdapter.initData(list);
-                    }else{
-                        mAdapter.addData(list);
-                    }
-                    if(list.size()<I.PAGE_SIZE_DEFAULT){
-                        mAdapter.setMore(false);
-                    }
-                }else{
-                    mAdapter.setMore(false);
+                    mAdapter.initData(list);
+
                 }
             }
 
@@ -101,15 +92,14 @@ public class BoutiqueFragment extends Fragment {
             public void onError(String error) {
                 mSrl.setRefreshing(false);
                 mTvRefresh.setVisibility(View.GONE);
-                mAdapter.setMore(false);
                 CommonUtils.showShortToast(error);
                 L.e("error:"+error);
             }
         });
     }
 
-
-    private void initView() {
+    @Override
+    protected void initView() {
         mSrl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
                 getResources().getColor(R.color.google_green),
@@ -120,6 +110,7 @@ public class BoutiqueFragment extends Fragment {
         mRv.setLayoutManager(llm);
         mRv.setHasFixedSize(true);
         mRv.setAdapter(mAdapter);
+        mRv.addItemDecoration(new SpaceItemDecoration(12));
 
     }
     private void setPullDownListener() {
@@ -128,8 +119,7 @@ public class BoutiqueFragment extends Fragment {
             public void onRefresh() {
                 mSrl.setRefreshing(true);
                 mTvRefresh.setVisibility(View.VISIBLE);
-                pageId = 1;
-                downloadBoutique(I.ACTION_PULL_DOWN);
+                downloadBoutique();
             }
         });
     }
@@ -139,11 +129,8 @@ public class BoutiqueFragment extends Fragment {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 int lastPosition = llm.findLastVisibleItemPosition();
-                if(newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastPosition == mAdapter.getItemCount()-1
-                        && mAdapter.isMore()){
-                    pageId++;
-                    downloadBoutique(I.ACTION_PULL_UP);
+                if(newState == RecyclerView.SCROLL_STATE_IDLE){
+                    downloadBoutique();
                 }
             }
 

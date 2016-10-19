@@ -17,7 +17,7 @@ import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @BindView(R.id.rbBoutique) RadioButton rbBoutique;
     @BindView(R.id.rbCart) RadioButton rbCart;
     @BindView(R.id.rbNewGood) RadioButton rbNewGood;
@@ -32,12 +32,11 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         L.i("MainActivity onCreate");
-        initView();
-        initFragment();
+        super.onCreate(savedInstanceState);
+
     }
 
     private void initFragment() {
@@ -50,16 +49,20 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction transaction = manger.beginTransaction();
         transaction.add(R.id.fragment_container, newGoodsFragment)
                 .add(R.id.fragment_container, boutiqueFragment)
-                .hide(newGoodsFragment)
-                .show(boutiqueFragment)
+                .hide(boutiqueFragment)
+                .show(newGoodsFragment)
                 .commit();
+        Log.i("main","finishinitFragment");
     }
 
-    private void initView() {
-        btns= new RadioButton[]{rbBoutique,rbCart,rbNewGood,rbCategory,rbPersonal};
+    @Override
+    protected void initView() {
+        btns= new RadioButton[]{rbNewGood,rbBoutique,rbCategory,rbCart,rbPersonal};
+        initFragment();
     }
 
     private void setRadioButtonStatus() {
+        L.e("index"+index);
         for(int i=0;i<btns.length;i++){
             if(i==index){
                 btns[i].setChecked(true);
@@ -84,18 +87,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onCheckedChange(View v){
-
+        L.i("changeclicked");
         switch (v.getId()){
-            case R.id.rbBoutique:
+            case R.id.rbNewGood:
                 index=0;
                 break;
-            case R.id.rbCart:
+            case R.id.rbBoutique:
+                L.e("clicked");
                 index=1;
                 break;
-            case R.id.rbNewGood:
+            case R.id.rbCategory:
                 index=2;
                 break;
-            case R.id.rbCategory:
+            case R.id.rbCart:
                 index=3;
                 break;
             case R.id.rbPersonal:
@@ -106,5 +110,8 @@ public class MainActivity extends AppCompatActivity {
         setFragment();
     }
 
-
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }
