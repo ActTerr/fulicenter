@@ -51,9 +51,7 @@ public class MainActivity extends BaseActivity {
         FragmentManager manger=getSupportFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
         transaction.add(R.id.fragment_container, newGoodsFragment)
-                .add(R.id.fragment_container,categoryFragment)
                 .add(R.id.fragment_container, boutiqueFragment)
-                .hide(categoryFragment)
                 .hide(boutiqueFragment)
                 .show(newGoodsFragment)
                 .commit();
