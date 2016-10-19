@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,10 +14,13 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 
 /**
  * Created by mac-yk on 2016/10/19.
@@ -49,6 +53,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
             bvh.bouTitle.setText(boutique.getTitle());
             bvh.bouName.setText(boutique.getName());
             bvh.bouDescription.setText(boutique.getDescription());
+            bvh.bouLl.setTag(boutique);
 
     }
 
@@ -81,9 +86,17 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         TextView bouName;
         @BindView(R.id.bou_description)
         TextView bouDescription;
+        @BindView(R.id.bou_ll)
+        LinearLayout bouLl;
         public BoutiqueViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+        @OnClick(R.id.layout_boutique)
+        public void onGoodsItemClick(){
+            BoutiqueBean bean = (BoutiqueBean) bouLl.getTag();
+            MFGT.gotoBoutiqueLevl2Activity(context,bean);
+        }
+
     }
 }
