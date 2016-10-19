@@ -9,12 +9,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
 
-import java.lang.reflect.Array;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
 
+import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
 
@@ -26,8 +25,11 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.rbPersonal) RadioButton rbPersonal;
     int index;
     RadioButton[] btns;
-    NewGoodsFragment fd;
+    NewGoodsFragment newGoodsFragment;
+    BoutiqueFragment boutiqueFragment;
     Fragment[] fragments;
+    int currentIndex;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,11 +42,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFragment() {
         fragments=new Fragment[5];
-        fd=new NewGoodsFragment();
+        newGoodsFragment =new NewGoodsFragment();
+        boutiqueFragment=new BoutiqueFragment();
+        fragments[0]=newGoodsFragment;
+        fragments[1]=boutiqueFragment;
         FragmentManager manger=getSupportFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
-        transaction.add(R.id.fragment_container,fd)
-                .show(fd)
+        transaction.add(R.id.fragment_container, newGoodsFragment)
+                .add(R.id.fragment_container, boutiqueFragment)
+                .hide(newGoodsFragment)
+                .show(boutiqueFragment)
                 .commit();
     }
 
@@ -60,10 +67,24 @@ public class MainActivity extends AppCompatActivity {
                 btns[i].setChecked(false);
             }
         }
+
+    }
+
+    private void setFragment() {
+        if(currentIndex!=index){
+            FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+            ft.hide(fragments[currentIndex]);
+            if(!fragments[index].isAdded()){
+                ft.add(R.id.fragment_container,fragments[index]);
+            }
+            ft.show(fragments[index]).commit();
+            setRadioButtonStatus();
+            currentIndex=index;
+        }
     }
 
     public void onCheckedChange(View v){
-        Log.i("main","success");
+
         switch (v.getId()){
             case R.id.rbBoutique:
                 index=0;
@@ -81,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
                 index=4;
                 break;
         }
-        setRadioButtonStatus();
+
+        setFragment();
     }
+
 
 }
