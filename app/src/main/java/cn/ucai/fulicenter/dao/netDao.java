@@ -43,9 +43,19 @@ public class NetDao {
     public static void downloadGroup(Context context,OkHttpUtils.OnCompleteListener<CategoryGroupBean[]> listener){
         OkHttpUtils utils=new OkHttpUtils(context);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
+                .targetClass(CategoryGroupBean[].class)
+                .execute(listener);
+
+    }
+    public static void downloadChild(Context context,int parentID,int PageID,int PageSize,OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener){
+        OkHttpUtils utils=new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
+                .addParam(I.CategoryGroup.ID,String.valueOf(parentID))
+                .addParam(I.PAGE_ID,String.valueOf(parentID))
+                .addParam(I.PAGE_SIZE,String.valueOf(PageSize))
                 .targetClass(CategoryChildBean[].class)
                 .execute(listener);
 
     }
-    
+
 }
