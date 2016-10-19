@@ -25,6 +25,7 @@ import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
+import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
@@ -37,8 +38,8 @@ public class CategoryFragment extends BaseFragment {
     @BindView(R.id.elv)
     ExpandableListView elv;
     CategoryAdapter mAdapter;
-    ArrayList<Integer> mGroupList;
-    ArrayList<ArrayList<Integer>> mChildList;
+    ArrayList<CategoryChildBean> mChildList;
+    ArrayList<CategoryGroupBean> mGroupList;
     MainActivity mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class CategoryFragment extends BaseFragment {
         mContext = (MainActivity) getContext();
         mGroupList=new ArrayList<>();
         mChildList=new ArrayList<>();
-        mAdapter=new CategoryAdapter(mContext,mGroupList,mChildList);
+        mAdapter=new CategoryAdapter(mContext,mChildList,mGroupList);
         super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }

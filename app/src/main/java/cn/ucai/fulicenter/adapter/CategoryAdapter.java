@@ -5,12 +5,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
+import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.utils.ImageLoader;
 
 
 /**
@@ -21,13 +25,14 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     Context context;
     ArrayList<Integer> groupList;
     ArrayList<ArrayList<Integer>> childList;
+    ArrayList<CategoryGroupBean> mGroupList;
+    ArrayList<CategoryChildBean> mChildList;
 
 
-
-    public CategoryAdapter(Context context, ArrayList<Integer> groupList, ArrayList<ArrayList<Integer>> childList) {
+    public CategoryAdapter(Context context, ArrayList<CategoryChildBean> mChileList, ArrayList<CategoryGroupBean> mGroupList) {
         this.context = context;
-        this.groupList = groupList;
-        this.childList = childList;
+        this.mChildList = mChileList;
+        this.mGroupList = mGroupList;
     }
 
     @Override
@@ -67,15 +72,12 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        GroupViewHolder holder = null;
-        if (convertView == null) {
-            convertView = View.inflate(context, R.layout.item_category, null);
-            holder = new GroupViewHolder(convertView);
-            convertView.setTag(holder);
-        } else {
-            convertView.getTag();
-        }
-        holder.ivGroup.setImageResource(groupList.get(groupPosition));
+            convertView = View.inflate(context, R.layout.item_categoryGroup, null);
+            GroupViewHolder holder = new GroupViewHolder(convertView);
+            CategoryGroupBean categoryGroupBean=mGroupList.get(groupPosition);
+            ImageLoader.downloadImg(context,holder.ivGroup,categoryGroupBean.getImageUrl());
+            holder.textView.setText(categoryGroupBean.getName());
+
         if (isExpanded) {
             holder.ivExpand.setImageResource(R.mipmap.expand_off);
         } else {
@@ -86,9 +88,10 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            convertView = View.inflate(context, R.layout.item_categorychild, null);
+            convertView = View.inflate(context, R.layout.item_categoryChild, null);
             ChildViewHolder holder = new ChildViewHolder(convertView);
-            holder.ivCategoryChild.setImageResource(childList.get(groupPosition).get(childPosition));
+            CategoryChildBean childBean= mChildList.get(childPosition);
+            ImageLoader.downloadImg(context,holder.ivCategoryChild,childBean.getImageUrl());
         return convertView;
     }
 
@@ -102,6 +105,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         ImageView ivGroup;
         @BindView(R.id.ivExpand)
         ImageView ivExpand;
+        @BindView(R.id.tv_category_title)
+        TextView textView;
 
         GroupViewHolder(View v) {
             super();

@@ -45,5 +45,7 @@ public class NetDao {
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
                 .targetClass(CategoryChildBean[].class)
                 .execute(listener);
+
     }
+    
 }
