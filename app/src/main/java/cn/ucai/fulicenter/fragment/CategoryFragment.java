@@ -12,6 +12,7 @@ import android.widget.Adapter;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,6 +41,7 @@ public class CategoryFragment extends BaseFragment {
     CategoryAdapter mAdapter;
     ArrayList<CategoryChildBean> mChildList;
     ArrayList<CategoryGroupBean> mGroupList;
+    ArrayList<CategoryGroupBean> memory;
     MainActivity mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +57,34 @@ public class CategoryFragment extends BaseFragment {
     @Override
     protected void initData() {
         downloadGroup();
+
+
+    }
+
+    private void downloadChild() {
+         List<Integer> parentIds=new ArrayList<>();
+        for(CategoryGroupBean groupbean:memory){
+            parentIds.add(groupbean.getId());
+        }
+        for(int i=0;i<parentIds.size();i++){
+            NetDao.downloadChild(mContext, parentIds.get(i), new OkHttpUtils.OnCompleteListener<CategoryChildBean[]>() {
+                @Override
+                public void onSuccess(CategoryChildBean[] result) {
+                    if(result!=null && result.length>0) {
+                        ArrayList<CategoryChildBean>list = ConvertUtils.array2List(result);
+                        mAdapter.initDataChild(list);
+
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    CommonUtils.showShortToast(error);
+                    L.e("error:"+error);
+                }
+            });
+        }
+
     }
 
 
@@ -62,7 +92,11 @@ public class CategoryFragment extends BaseFragment {
         NetDao.downloadGroup(mContext, new OkHttpUtils.OnCompleteListener<CategoryGroupBean[]>() {
             @Override
             public void onSuccess(CategoryGroupBean[] result) {
-
+                if(result!=null && result.length>0) {
+                    memory = ConvertUtils.array2List(result);
+                    mAdapter.initDataGroup(memory);
+                    downloadChild();
+                }
             }
 
             @Override
@@ -77,7 +111,7 @@ public class CategoryFragment extends BaseFragment {
 
     @Override
     protected void initView() {
-
+        elv.setAdapter(mAdapter);
 
 
     }

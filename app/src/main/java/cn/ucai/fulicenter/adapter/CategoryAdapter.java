@@ -72,7 +72,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-            convertView = View.inflate(context, R.layout.item_categoryGroup, null);
+            convertView = View.inflate(context, R.layout.item_category_group, null);
             GroupViewHolder holder = new GroupViewHolder(convertView);
             CategoryGroupBean categoryGroupBean=mGroupList.get(groupPosition);
             ImageLoader.downloadImg(context,holder.ivGroup,categoryGroupBean.getImageUrl());
@@ -88,7 +88,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-            convertView = View.inflate(context, R.layout.item_categoryChild, null);
+            convertView = View.inflate(context, R.layout.item_category_child, null);
             ChildViewHolder holder = new ChildViewHolder(convertView);
             CategoryChildBean childBean= mChildList.get(childPosition);
             ImageLoader.downloadImg(context,holder.ivCategoryChild,childBean.getImageUrl());
@@ -98,6 +98,18 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+
+
+    public void initDataGroup(ArrayList<CategoryGroupBean> list) {
+        mGroupList=list;
+        notifyDataSetChanged();
+    }
+
+    public void initDataChild(ArrayList<CategoryChildBean> list) {
+        mChildList=list;
+        notifyDataSetChanged();
     }
 
     class GroupViewHolder {

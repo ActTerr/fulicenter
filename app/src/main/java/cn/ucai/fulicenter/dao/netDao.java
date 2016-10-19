@@ -47,12 +47,12 @@ public class NetDao {
                 .execute(listener);
 
     }
-    public static void downloadChild(Context context,int parentID,int PageID,int PageSize,OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener){
+    public static void downloadChild(Context context,int parentID,OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener){
         OkHttpUtils utils=new OkHttpUtils(context);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
                 .addParam(I.CategoryGroup.ID,String.valueOf(parentID))
-                .addParam(I.PAGE_ID,String.valueOf(parentID))
-                .addParam(I.PAGE_SIZE,String.valueOf(PageSize))
+                .addParam(I.PAGE_ID,String.valueOf(I.PAGE_ID_DEFAULT))
+                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(CategoryChildBean[].class)
                 .execute(listener);
 
