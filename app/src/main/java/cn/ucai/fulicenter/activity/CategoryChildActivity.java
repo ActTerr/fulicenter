@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -23,6 +24,7 @@ import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.views.CatChildFilterButton;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
 /**
@@ -51,7 +53,10 @@ public class CategoryChildActivity extends BaseActivity {
     Button btnSortPrice;
     @BindView(R.id.btn_sort_time)
     Button btnSortTime;
-
+    @BindView(R.id.btnCatChildFilter)
+    CatChildFilterButton btnCatChildFilter;
+    String groupName;
+    ArrayList<CategoryChildBean> list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activtiy_category_child);
@@ -60,7 +65,10 @@ public class CategoryChildActivity extends BaseActivity {
         mList = new ArrayList<>();
         mAdapter = new GoodsAdapter(mContext, mList);
         id = getIntent().getIntExtra(I.Category.KEY_CAT_ID, 0);
+        groupName=getIntent().getStringExtra(I.CategoryGroup.NAME);
+        list= (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.ID);
         super.onCreate(savedInstanceState);
+
     }
 
     protected void initView() {
@@ -75,6 +83,7 @@ public class CategoryChildActivity extends BaseActivity {
         mRv.setHasFixedSize(true);
         mRv.setAdapter(mAdapter);
         mRv.addItemDecoration(new SpaceItemDecoration(12));
+        btnCatChildFilter.setText(groupName);
     }
 
     protected void setListener() {
@@ -154,6 +163,7 @@ public class CategoryChildActivity extends BaseActivity {
 
     protected void initData() {
         downloadCategoryGoods(I.ACTION_DOWNLOAD);
+        btnCatChildFilter.setOnCatFilterClickListener(groupName,list);
     }
 
 
@@ -171,8 +181,8 @@ public class CategoryChildActivity extends BaseActivity {
                     sortBy = I.SORT_BY_PRICE_DESC;
                     right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                right.setBounds(0,0,right.getMinimumWidth(),right.getMinimumHeight());
-                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                right.setBounds(0, 0, right.getMinimumWidth(), right.getMinimumHeight());
+                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
                 PriceAsc = !PriceAsc;
                 break;
             case R.id.btn_sort_time:
@@ -184,8 +194,8 @@ public class CategoryChildActivity extends BaseActivity {
                     sortBy = I.SORT_BY_ADDTIME_DESC;
                     right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                right.setBounds(0,0,right.getMinimumWidth(),right.getMinimumHeight());
-                btnSortTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                right.setBounds(0, 0, right.getMinimumWidth(), right.getMinimumHeight());
+                btnSortTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
                 addTimeAsc = !addTimeAsc;
                 break;
         }
