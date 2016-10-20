@@ -47,7 +47,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="时间"
-            android:drawableLeft="@drawable/arrow_order_up"/>
+            android:drawableRight="@drawable/arrow_order_up"/>
     </LinearLayout>
     <include layout="@layout/showgoods"/>
 </LinearLayout>

@@ -1,11 +1,12 @@
 package cn.ucai.fulicenter.activity;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -15,7 +16,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
-import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -43,10 +43,15 @@ public class CategoryChildActivity extends BaseActivity {
     @BindView(R.id.srl)
     SwipeRefreshLayout mSrl;
 
-    int sortBy=I.SORT_BY_ADDTIME_DESC;
+    int sortBy = I.SORT_BY_ADDTIME_DESC;
     int id;
-    boolean PriceAsc=false;
-    boolean addTimeAsc=false;
+    boolean PriceAsc = false;
+    boolean addTimeAsc = false;
+    @BindView(R.id.btn_sort_price)
+    Button btnSortPrice;
+    @BindView(R.id.btn_sort_time)
+    Button btnSortTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activtiy_category_child);
@@ -154,26 +159,34 @@ public class CategoryChildActivity extends BaseActivity {
 
     @OnClick({R.id.btn_sort_price, R.id.btn_sort_time})
     public void onClick(View view) {
+        Drawable right;
         switch (view.getId()) {
 
             case R.id.btn_sort_price:
-                L.e("price","clicked");
-                if (PriceAsc){
-                    sortBy=I.SORT_BY_PRICE_ASC;
-                }else {
-                    sortBy=I.SORT_BY_PRICE_DESC;
-
+                L.e("price", "clicked");
+                if (PriceAsc) {
+                    sortBy = I.SORT_BY_PRICE_ASC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_up);
+                } else {
+                    sortBy = I.SORT_BY_PRICE_DESC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                PriceAsc=!PriceAsc;
+                right.setBounds(0,0,right.getMinimumWidth(),right.getMinimumHeight());
+                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                PriceAsc = !PriceAsc;
                 break;
             case R.id.btn_sort_time:
-                L.e("time","clicked");
-                if(addTimeAsc){
-                    sortBy=I.SORT_BY_ADDTIME_ASC;
-                }else {
-                    sortBy=I.SORT_BY_ADDTIME_DESC;
+                L.e("time", "clicked");
+                if (addTimeAsc) {
+                    sortBy = I.SORT_BY_ADDTIME_ASC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_up);
+                } else {
+                    sortBy = I.SORT_BY_ADDTIME_DESC;
+                    right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                addTimeAsc=!addTimeAsc;
+                right.setBounds(0,0,right.getMinimumWidth(),right.getMinimumHeight());
+                btnSortTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                addTimeAsc = !addTimeAsc;
                 break;
         }
         mAdapter.setSortBy(sortBy);
