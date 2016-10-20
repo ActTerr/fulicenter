@@ -12,9 +12,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.adapter.BoutiqueAdapter;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -26,7 +24,7 @@ import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
-public class BoutiqueLevel2Activity extends BaseActivity {
+public class BoutiqueChildActivity extends BaseActivity {
     Context mContext;
     GoodsAdapter mAdapter;
     ArrayList<NewGoodsBean> mList;
@@ -44,7 +42,7 @@ public class BoutiqueLevel2Activity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        setContentView(R.layout.activity_boutique_level2);
+        setContentView(R.layout.activity_boutique_child);
         ButterKnife.bind(this);
         mContext = this;
         mList = new ArrayList<>();

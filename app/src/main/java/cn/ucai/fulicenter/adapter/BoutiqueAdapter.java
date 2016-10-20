@@ -95,7 +95,7 @@ public class BoutiqueAdapter extends RecyclerView.Adapter {
         @OnClick(R.id.layout_boutique)
         public void onGoodsItemClick(){
             BoutiqueBean bean = (BoutiqueBean) bouLl.getTag();
-            MFGT.gotoBoutiqueLevl2Activity(context,bean);
+            MFGT.gotoBoutiqueChildActivity(context,bean);
         }
 
     }

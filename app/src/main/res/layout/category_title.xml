@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:background="@color/main_orange">
+    <ImageView
+        android:layout_alignParentTop="true"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:src="@mipmap/expand_off"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="10dp"
+
+        />
+    <LinearLayout
+        android:id="@+id/backClickArea"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/back"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_height="40dp"
+        android:layout_toRightOf="@+id/backClickArea">
+        <TextView
+            android:id="@+id/tv_common_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="商品详情"
+            android:textSize="18dp"
+            android:textColor="@color/white"/>
+
+
+    </LinearLayout>
+
+</RelativeLayout>
