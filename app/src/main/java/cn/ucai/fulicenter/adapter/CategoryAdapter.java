@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -125,24 +126,24 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
 
 
     public void initDataGroup(ArrayList<CategoryGroupBean> list) {
-        mGroupList = list;
+        if(mGroupList!=null){
+         mGroupList.clear();
+        }
+        mGroupList.addAll(list);
         notifyDataSetChanged();
+
     }
 
-    public void initDataChild(ArrayList<CategoryChildBean> list) {
-    if (mChildList.get(index)==null){
-        mChildList.add(index,new ArrayList<CategoryChildBean>());
-    }
-        mChildList.get(index).addAll(list);
-        L.e("adapter"+index);
+    public void initDataChild(ArrayList<ArrayList<CategoryChildBean>> list) {
+        if(mChildList!=null){
+           mChildList.clear();
+        }
+        mChildList.addAll(list);
+        Log.e("adapter",list.toString());
         notifyDataSetChanged();
-        L.e("initChild success");
+        Log.e("init","success");
     }
 
-    public void getIndex(int index) {
-        this.index=index;
-        notifyDataSetChanged();
-    }
 
 
     static class ChildViewHolder {

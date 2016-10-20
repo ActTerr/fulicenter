@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,8 @@ public class CategoryFragment extends BaseFragment {
     CategoryAdapter mAdapter;
     ArrayList<CategoryGroupBean> mGroupList;
     ArrayList<ArrayList<CategoryChildBean>> mChildList;
-    ArrayList<CategoryGroupBean> memory;
     MainActivity mContext;
     int index;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_category, null);
@@ -63,27 +62,22 @@ public class CategoryFragment extends BaseFragment {
     protected void initData() {
         downloadGroup();
 
-
     }
 
-    private void downloadChild() {
+    private void downloadChild(int id, final int in) {
 
-        List<Integer> parentIds = new ArrayList<>();
-        for (CategoryGroupBean groupbean : memory) {
-            parentIds.add(groupbean.getId());
-        }
-        for (index = 0; index < parentIds.size(); index++) {
-            NetDao.downloadChild(mContext, parentIds.get(index), new OkHttpUtils.OnCompleteListener<CategoryChildBean[]>() {
+            NetDao.downloadChild(mContext, id, new OkHttpUtils.OnCompleteListener<CategoryChildBean[]>() {
                 @Override
                 public void onSuccess(CategoryChildBean[] result) {
-                    L.e("fragment" + index);
+                    Log.e("fragment"," "+in);
                     if (result != null && result.length > 0) {
                         ArrayList<CategoryChildBean> list = ConvertUtils.array2List(result);
-
-                        mAdapter.getIndex(index);
-                        mAdapter.initDataChild(list);
+                        L.e("list",list.toString());
+                        L.e("listsize",list.size()+"");
+                        mChildList.set(in,list);
 
                     }
+                    mAdapter.initDataChild(mChildList);
                 }
 
                 @Override
@@ -92,10 +86,6 @@ public class CategoryFragment extends BaseFragment {
                     L.e("error:" + error);
                 }
             });
-
-        }
-
-
     }
 
 
@@ -105,9 +95,15 @@ public class CategoryFragment extends BaseFragment {
             public void onSuccess(CategoryGroupBean[] result) {
                 L.e("downloadGroup onSuccess");
                 if (result != null && result.length > 0) {
-                    memory = ConvertUtils.array2List(result);
-                    mAdapter.initDataGroup(memory);
-                    downloadChild();
+                    mGroupList = ConvertUtils.array2List(result);
+                    mAdapter.initDataGroup(mGroupList);
+                    for (int i=0;i<mGroupList.size();i++) {
+                        mChildList.add(new ArrayList<CategoryChildBean>());
+                        CategoryGroupBean groupbean=mGroupList.get(i);
+                        int id=groupbean.getId();
+                        downloadChild(id,index);
+                        index++;
+                    }
                 }
             }
 
@@ -125,8 +121,6 @@ public class CategoryFragment extends BaseFragment {
     protected void initView() {
         elv.setGroupIndicator(null);
         elv.setAdapter(mAdapter);
-
     }
-
 
 }
