@@ -56,11 +56,11 @@ public class CatChildFilterButton extends Button {
     private void initPopupWindow() {
         mPopupWindow=new PopupWindow();
         mPopupWindow.setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-        if(mgvCategory.getAdapter().getCount()<16){
+        //if(mgvCategory.getAdapter().getCount()<16){
             mPopupWindow.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-        }else{
-            mPopupWindow.setHeight(ConvertUtils.px2dp(mContext, 200));
-        }
+        //}else{
+          //  mPopupWindow.setHeight(ConvertUtils.px2dp(mContext, 200));
+        //}
         mPopupWindow.setTouchable(true);
         mPopupWindow.setOutsideTouchable(true);
         mPopupWindow.setBackgroundDrawable(new ColorDrawable(0xbb000000));
@@ -106,7 +106,9 @@ public class CatChildFilterButton extends Button {
             this.context = context;
             this.Children = list;
         }
-
+        public ArrayList<CategoryChildBean> getChildren(){
+            return this.Children;
+        }
         @Override
         public int getCount() {
             return Children==null?0:Children.size();
@@ -179,7 +181,10 @@ public class CatChildFilterButton extends Button {
                 mbtnTop.setTextColor(Color.WHITE);
                 mbtnTop.setText(groupName);
                 if(mExpandOff){//若分类列表的窗口未打开，则弹出窗口
-                    mAdapter=new CatFilterAdapter(mContext, childList);
+                    if(mAdapter==null){
+                        mAdapter=new CatFilterAdapter(mContext, childList);
+                    }
+
                     mgvCategory.setAdapter(mAdapter);
                     initPopupWindow();
                 }else{//否则，关闭窗口
