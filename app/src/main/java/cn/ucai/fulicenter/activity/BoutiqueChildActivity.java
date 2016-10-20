@@ -30,6 +30,7 @@ public class BoutiqueChildActivity extends BaseActivity {
     ArrayList<NewGoodsBean> mList;
     int pageId = 1;
     GridLayoutManager glm;
+
     @BindView(R.id.tv_refresh)
     TextView mTvRefresh;
     @BindView(R.id.rv)
