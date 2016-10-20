@@ -10,6 +10,7 @@ import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 
 /**
@@ -45,17 +46,15 @@ public class NetDao {
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
                 .targetClass(CategoryGroupBean[].class)
                 .execute(listener);
-
+        L.e("success download group");
     }
     public static void downloadChild(Context context,int parentID,OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener){
         OkHttpUtils utils=new OkHttpUtils(context);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
-                .addParam(I.CategoryGroup.ID,String.valueOf(parentID))
-                .addParam(I.PAGE_ID,String.valueOf(I.PAGE_ID_DEFAULT))
-                .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                .addParam("parent_id",String.valueOf(parentID))
                 .targetClass(CategoryChildBean[].class)
                 .execute(listener);
-
+        L.e("success download child");
     }
 
 }

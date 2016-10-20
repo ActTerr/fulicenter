@@ -45,6 +45,7 @@ public class MainActivity extends BaseActivity {
         fragments=new Fragment[5];
         newGoodsFragment =new NewGoodsFragment();
         boutiqueFragment=new BoutiqueFragment();
+        categoryFragment=new CategoryFragment();
         fragments[0]=newGoodsFragment;
         fragments[1]=boutiqueFragment;
         fragments[2]=categoryFragment;
