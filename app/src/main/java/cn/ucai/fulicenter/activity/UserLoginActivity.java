@@ -91,7 +91,12 @@ public class UserLoginActivity extends BaseActivity {
                         CommonUtils.showShortToast(R.string.login);
                         MFGT.gotoMainActivity(mContext);
                     }else {
-                        CommonUtils.showShortToast("login fail");
+                        if(result.getRetCode()==I.MSG_LOGIN_ERROR_PASSWORD){
+                            CommonUtils.showShortToast(R.string.login_fail_pwderror);
+                        }else if (result.getRetCode()==I.MSG_LOGIN_UNKNOW_USER){
+                            CommonUtils.showShortToast(R.string.login_fail_noUser);
+                        }
+
                     }
                 }
             }

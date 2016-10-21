@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -37,7 +38,7 @@ public class RegisterActivity extends BaseActivity {
     String password;
     String cofirmPassword;
     String userNick;
-    Context mContext;
+    Activity mContext;
     ProgressDialog pb;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class RegisterActivity extends BaseActivity {
                         CommonUtils.showShortToast(R.string.register_success);
                         FuLiCenterApplication.setUserName(userName);
                         MFGT.startActivity(mContext,new Intent(mContext,UserLoginActivity.class));
+                        MFGT.finish(mContext);
                     }else {
 
                         CommonUtils.showShortToast(R.string.register_fail_exists);
