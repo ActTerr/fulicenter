@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -56,6 +57,11 @@ public class UserLoginActivity extends BaseActivity {
         if(FuLiCenterApplication.userName!=null){
             userName=FuLiCenterApplication.getUserName();
             etLoginName.setText(userName);
+        }else {
+            L.e("main","进入首选项分支");
+            SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+            String name=sp.getString("name","noData");
+            etLoginName.setText(name);
         }
 
     }
@@ -77,7 +83,7 @@ public class UserLoginActivity extends BaseActivity {
                 userName=etLoginName.getText().toString().trim();
                 password=etLoginPassword.getText().toString().trim();
                 if(userName.matches("[a-zA-Z]\\w{5,15}")){
-                    login(MD5.getMessageDigest(password),userName);
+                    login();
                 }
 
                 break;
@@ -87,12 +93,12 @@ public class UserLoginActivity extends BaseActivity {
         }
     }
 
-    private void login(String password, String userName) {
+    private void login() {
         L.e("main","s1"+password);
         pb=new ProgressDialog(mContext);
         pb.setMessage("login...");
         pb.show();
-        NetDao.UserLogin(mContext, userName, password, new OkHttpUtils.OnCompleteListener<String>() {
+        NetDao.UserLogin(mContext, userName, MD5.getMessageDigest(password), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String re) {
                 Result result=ResultUtils.getResultFromJson(re,UserBean.class);
@@ -103,6 +109,11 @@ public class UserLoginActivity extends BaseActivity {
                         CommonUtils.showShortToast(R.string.login);
                         user= (UserBean) result.getRetData();
                         //L.e(user.toString());
+                        SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sp.edit();
+                        editor.putString("name",userName);
+                        editor.commit();
+                        L.e("main","sp放入数据 "+userName);
                         MFGT.gotoMainActivity(mContext);
 
                     }else {
@@ -123,5 +134,7 @@ public class UserLoginActivity extends BaseActivity {
             }
         });
     }
+
+
 
 }
