@@ -15,6 +15,7 @@ import cn.ucai.fulicenter.R;
 
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
+import cn.ucai.fulicenter.fragment.CartFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.fragment.PersonalFragment;
@@ -33,6 +34,7 @@ public class MainActivity extends BaseActivity {
     BoutiqueFragment boutiqueFragment;
     CategoryFragment categoryFragment;
     PersonalFragment pensonalFragment;
+    CartFragment cartFragment;
     Fragment[] fragments;
     int currentIndex;
 
@@ -51,9 +53,11 @@ public class MainActivity extends BaseActivity {
         boutiqueFragment=new BoutiqueFragment();
         categoryFragment=new CategoryFragment();
         pensonalFragment=new PersonalFragment();
+        cartFragment=new CartFragment();
         fragments[0]=newGoodsFragment;
         fragments[1]=boutiqueFragment;
         fragments[2]=categoryFragment;
+        fragments[3]=cartFragment;
         fragments[4]=pensonalFragment;
         FragmentManager manger=getSupportFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
@@ -83,7 +87,7 @@ public class MainActivity extends BaseActivity {
 
     }
 
-    private void setFragment() {
+    public void setFragment() {
         if(currentIndex!=index){
             FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
             ft.hide(fragments[currentIndex]);

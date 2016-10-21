@@ -1,10 +1,12 @@
 package cn.ucai.fulicenter.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by mac-yk on 2016/10/21.
  */
 
-public class UserBean {
+public class UserBean implements Serializable{
     /**
      * muserName : a13214151
      * muserNick : fafafa
@@ -77,5 +79,18 @@ public class UserBean {
 
     public void setMavatarLastUpdateTime(String mavatarLastUpdateTime) {
         this.mavatarLastUpdateTime = mavatarLastUpdateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "UserBean{" +
+                "muserName='" + muserName + '\'' +
+                ", muserNick='" + muserNick + '\'' +
+                ", mavatarId=" + mavatarId +
+                ", mavatarPath='" + mavatarPath + '\'' +
+                ", mavatarSuffix=" + mavatarSuffix +
+                ", mavatarType=" + mavatarType +
+                ", mavatarLastUpdateTime='" + mavatarLastUpdateTime + '\'' +
+                '}';
     }
 }

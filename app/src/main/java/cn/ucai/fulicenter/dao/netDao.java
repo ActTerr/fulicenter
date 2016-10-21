@@ -12,6 +12,7 @@ import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MD5;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ResultUtils;
 
@@ -74,12 +75,12 @@ public class NetDao {
                 .targetClass(Result.class)
                 .execute(listener);
     }
-    public static void UserLogin(Context context,String userName,String passwd,OkHttpUtils.OnCompleteListener<Result> listener){
-        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
+    public static void UserLogin(Context context,String userName,String passwd,OkHttpUtils.OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_LOGIN)
                 .addParam(I.User.USER_NAME,userName)
                 .addParam(I.User.PASSWORD,passwd)
-                .targetClass(Result.class)
+                .targetClass(String.class)
                 .execute(listener);
 
     }
@@ -87,7 +88,7 @@ public class NetDao {
         OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_REGISTER)
                 .addParam(I.User.USER_NAME,userName)
-                .addParam(I.User.PASSWORD,passwd)
+                .addParam(I.User.PASSWORD,MD5.getMessageDigest(passwd))
                 .addParam(I.User.NICK,userNick)
                 .targetClass(Result.class)
                 .post()

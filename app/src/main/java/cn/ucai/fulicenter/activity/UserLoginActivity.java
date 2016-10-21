@@ -9,17 +9,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MD5;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.utils.ResultUtils;
 
 public class UserLoginActivity extends BaseActivity {
 
@@ -34,11 +41,13 @@ public class UserLoginActivity extends BaseActivity {
     String password;
     String userName;
     ProgressDialog pb;
+    UserBean user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        mContext=this;
         super.onCreate(savedInstanceState);
     }
 
@@ -68,7 +77,7 @@ public class UserLoginActivity extends BaseActivity {
                 userName=etLoginName.getText().toString().trim();
                 password=etLoginPassword.getText().toString().trim();
                 if(userName.matches("[a-zA-Z]\\w{5,15}")){
-                    login(password,userName);
+                    login(MD5.getMessageDigest(password),userName);
                 }
 
                 break;
@@ -79,17 +88,23 @@ public class UserLoginActivity extends BaseActivity {
     }
 
     private void login(String password, String userName) {
+        L.e("main","s1"+password);
         pb=new ProgressDialog(mContext);
         pb.setMessage("login...");
         pb.show();
-        NetDao.UserLogin(mContext, userName, password, new OkHttpUtils.OnCompleteListener<Result>() {
+        NetDao.UserLogin(mContext, userName, password, new OkHttpUtils.OnCompleteListener<String>() {
             @Override
-            public void onSuccess(Result result) {
+            public void onSuccess(String re) {
+                Result result=ResultUtils.getResultFromJson(re,UserBean.class);
+                L.e("main","s2");
                 pb.dismiss();
                 if (result!=null){
                     if (result.getRetCode()==0){
                         CommonUtils.showShortToast(R.string.login);
+                        user= (UserBean) result.getRetData();
+                        //L.e(user.toString());
                         MFGT.gotoMainActivity(mContext);
+
                     }else {
                         if(result.getRetCode()==I.MSG_LOGIN_ERROR_PASSWORD){
                             CommonUtils.showShortToast(R.string.login_fail_pwderror);

@@ -19,7 +19,7 @@ public class PersonalFragment extends BaseFragment {
     Context mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_pensonal,container,false);
+        View view= inflater.inflate(R.layout.fragment_personal ,container,false);
         mContext=getContext();
         super.onCreateView(inflater, container, savedInstanceState);
         return view;
