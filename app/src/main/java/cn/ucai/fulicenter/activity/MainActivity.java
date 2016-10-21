@@ -113,8 +113,8 @@ public class MainActivity extends BaseActivity {
                 index=3;
                 break;
             case R.id.rbPersonal:
-                if(1==1){
-                    MFGT.startActivity(this,new Intent(this, LoginActivity.class));
+                if(FuLiCenterApplication.getUserName()==null){
+                    MFGT.startActivity(this,new Intent(this, UserLoginActivity.class));
                 }else {
                     index=4;
                 }

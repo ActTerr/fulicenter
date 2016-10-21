@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.activity.LoginActivity;
 import cn.ucai.fulicenter.utils.MFGT;
 
 /**

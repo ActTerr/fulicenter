@@ -21,7 +21,7 @@ import cn.ucai.fulicenter.utils.ResultUtils;
 
 public class NetDao {
     public static void downloadNewGoods(Context context, int catId,int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener){
-        OkHttpUtils utils = new OkHttpUtils(context);
+        OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
                 .addParam(I.NewAndBoutiqueGoods.CAT_ID,String.valueOf(catId))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
@@ -31,27 +31,27 @@ public class NetDao {
     }
 
     public static void downloadGoodsDetail(Context context, int goodsId, OkHttpUtils.OnCompleteListener<GoodsDetailsBean> listener){
-        OkHttpUtils utils = new OkHttpUtils(context);
+        OkHttpUtils<GoodsDetailsBean> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
                 .addParam(I.GoodsDetails.KEY_GOODS_ID,String.valueOf(goodsId))
                 .targetClass(GoodsDetailsBean.class)
                 .execute(listener);
     }
     public static void downloadBoutique(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener){
-        OkHttpUtils utils=new OkHttpUtils(context);
+        OkHttpUtils<BoutiqueBean[]> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_BOUTIQUES)
                 .targetClass(BoutiqueBean[].class)
                 .execute(listener);
     }
     public static void downloadGroup(Context context,OkHttpUtils.OnCompleteListener<CategoryGroupBean[]> listener){
-        OkHttpUtils utils=new OkHttpUtils(context);
+        OkHttpUtils<CategoryGroupBean[]> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_GROUP)
                 .targetClass(CategoryGroupBean[].class)
                 .execute(listener);
         L.e("success download group");
     }
     public static void downloadChild(Context context,int parentID,OkHttpUtils.OnCompleteListener<CategoryChildBean[]> listener){
-        OkHttpUtils utils=new OkHttpUtils(context);
+        OkHttpUtils<CategoryChildBean[]> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_CATEGORY_CHILDREN)
                 .addParam("parent_id",String.valueOf(parentID))
                 .targetClass(CategoryChildBean[].class)
@@ -59,7 +59,7 @@ public class NetDao {
         L.e("success download child");
     }
     public static void downloadCategoryGoods(Context context, int catId,int pageId, OkHttpUtils.OnCompleteListener<NewGoodsBean[]> listener){
-        OkHttpUtils utils = new OkHttpUtils(context);
+        OkHttpUtils<NewGoodsBean[]> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
                 .addParam(I.NewAndBoutiqueGoods.CAT_ID,String.valueOf(catId))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
@@ -68,14 +68,14 @@ public class NetDao {
                 .execute(listener);
     }
     public static void findUser(Context context,String userName,OkHttpUtils.OnCompleteListener<Result> listener){
-        OkHttpUtils utils=new OkHttpUtils(context);
+        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_USER)
                 .addParam(I.User.USER_NAME,userName)
                 .targetClass(Result.class)
                 .execute(listener);
     }
     public static void UserLogin(Context context,String userName,String passwd,OkHttpUtils.OnCompleteListener<Result> listener){
-        OkHttpUtils utils=new OkHttpUtils(context);
+        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_LOGIN)
                 .addParam(I.User.USER_NAME,userName)
                 .addParam(I.User.PASSWORD,passwd)
@@ -84,12 +84,13 @@ public class NetDao {
 
     }
     public static void UserRegister(Context context,String userName,String passwd,String userNick,OkHttpUtils.OnCompleteListener<Result> listener){
-        OkHttpUtils utils=new OkHttpUtils(context);
+        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_REGISTER)
                 .addParam(I.User.USER_NAME,userName)
                 .addParam(I.User.PASSWORD,passwd)
                 .addParam(I.User.NICK,userNick)
                 .targetClass(Result.class)
+                .post()
                 .execute(listener);
     }
 }
