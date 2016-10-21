@@ -9,9 +9,11 @@ import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
+import cn.ucai.fulicenter.utils.ResultUtils;
 
 /**
  * Created by clawpo on 2016/10/17.
@@ -63,6 +65,31 @@ public class NetDao {
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(NewGoodsBean[].class)
+                .execute(listener);
+    }
+    public static void findUser(Context context,String userName,OkHttpUtils.OnCompleteListener<Result> listener){
+        OkHttpUtils utils=new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_FIND_USER)
+                .addParam(I.User.USER_NAME,userName)
+                .targetClass(Result.class)
+                .execute(listener);
+    }
+    public static void UserLogin(Context context,String userName,String passwd,OkHttpUtils.OnCompleteListener<Result> listener){
+        OkHttpUtils utils=new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_LOGIN)
+                .addParam(I.User.USER_NAME,userName)
+                .addParam(I.User.PASSWORD,passwd)
+                .targetClass(Result.class)
+                .execute(listener);
+
+    }
+    public static void UserRegister(Context context,String userName,String passwd,String userNick,OkHttpUtils.OnCompleteListener<Result> listener){
+        OkHttpUtils utils=new OkHttpUtils(context);
+        utils.setRequestUrl(I.REQUEST_REGISTER)
+                .addParam(I.User.USER_NAME,userName)
+                .addParam(I.User.PASSWORD,passwd)
+                .addParam(I.User.NICK,userNick)
+                .targetClass(Result.class)
                 .execute(listener);
     }
 }

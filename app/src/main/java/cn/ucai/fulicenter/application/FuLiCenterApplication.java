@@ -25,4 +25,5 @@ public class FuLiCenterApplication extends Application {
         return instance;
     }
 
+
 }

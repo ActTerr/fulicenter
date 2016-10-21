@@ -1,9 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,10 +13,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
 
+import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
+import cn.ucai.fulicenter.fragment.PersonalFragment;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 
 public class MainActivity extends BaseActivity {
     @BindView(R.id.rbBoutique) RadioButton rbBoutique;
@@ -29,6 +32,7 @@ public class MainActivity extends BaseActivity {
     NewGoodsFragment newGoodsFragment;
     BoutiqueFragment boutiqueFragment;
     CategoryFragment categoryFragment;
+    PersonalFragment pensonalFragment;
     Fragment[] fragments;
     int currentIndex;
 
@@ -46,9 +50,11 @@ public class MainActivity extends BaseActivity {
         newGoodsFragment =new NewGoodsFragment();
         boutiqueFragment=new BoutiqueFragment();
         categoryFragment=new CategoryFragment();
+        pensonalFragment=new PersonalFragment();
         fragments[0]=newGoodsFragment;
         fragments[1]=boutiqueFragment;
         fragments[2]=categoryFragment;
+        fragments[4]=pensonalFragment;
         FragmentManager manger=getSupportFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
         transaction.add(R.id.fragment_container, newGoodsFragment)
@@ -107,7 +113,12 @@ public class MainActivity extends BaseActivity {
                 index=3;
                 break;
             case R.id.rbPersonal:
-                index=4;
+                if(1==1){
+                    MFGT.startActivity(this,new Intent(this, LoginActivity.class));
+                }else {
+                    index=4;
+                }
+
                 break;
         }
 
