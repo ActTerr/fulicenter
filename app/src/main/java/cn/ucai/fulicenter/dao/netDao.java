@@ -103,4 +103,14 @@ public class NetDao {
                 .targetClass(Result2.class)
                 .execute(listener);
     }
+    public static void addCart(Context context,String goodsId,String userName,String count,String isChecked, OkHttpUtils.OnCompleteListener<Result2> listener){
+        OkHttpUtils<Result2> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.CategoryGood.GOODS_ID,goodsId)
+                .addParam(I.USERNAME,userName)
+                .addParam(I.COUNT,count)
+                .addParam(I.ISCHECKED,isChecked)
+                .targetClass(Result2.class)
+                .execute(listener);
+    }
 }

@@ -56,7 +56,7 @@ public class GoodsDetailActivity extends BaseActivity {
     RelativeLayout layoutBanner;
     @BindView(R.id.activity_goods_detail)
     RelativeLayout activityGoodsDetail;
-
+    String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,6 +65,8 @@ public class GoodsDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
         goodsId = goods.getGoodsId();
+        SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+        userName=sp.getString("name","fail");
         L.e("details", "goodsid=" + goodsId);
 
         if (goodsId == 0) {
@@ -148,8 +150,7 @@ public class GoodsDetailActivity extends BaseActivity {
 
                 break;
             case R.id.iv_good_collect:
-                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
-                String userName=sp.getString("name","fail");
+
                 NetDao.addCollect(mContext, String.valueOf(goodsId), userName, new OkHttpUtils.OnCompleteListener<Result2>() {
                     @Override
                     public void onSuccess(Result2 result) {
@@ -165,6 +166,17 @@ public class GoodsDetailActivity extends BaseActivity {
                 });
                 break;
             case R.id.iv_good_cart:
+                    NetDao.addCart(mContext, String.valueOf(goodsId), userName, "1", I.ISCHECKED, new OkHttpUtils.OnCompleteListener<Result2>() {
+                        @Override
+                        public void onSuccess(Result2 result) {
+                            CommonUtils.showShortToast(result.getMsg());
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            CommonUtils.showShortToast(error);
+                        }
+                    });
                 break;
         }
     }

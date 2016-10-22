@@ -38,6 +38,8 @@ public interface I {
     String CURRENCY_TYPE_USD = "USD";
 
     String TEXT_HTML = "text/html";
+    String COUNT="count";
+    String ISCHECKED="isChecked";
 
     String ACTION_TYPE_PERSONAL = "personal";
     String ACTION_TYPE_CART = "cart";
