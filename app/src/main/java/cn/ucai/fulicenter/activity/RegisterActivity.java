@@ -126,5 +126,6 @@ public class RegisterActivity extends BaseActivity {
                     CommonUtils.showShortToast(error);
             }
         });
+
     }
 }

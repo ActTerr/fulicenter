@@ -23,6 +23,7 @@ import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.CatChildFilterButton;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
@@ -201,4 +202,10 @@ public class CategoryChildActivity extends BaseActivity {
         }
         mAdapter.setSortBy(sortBy);
     }
+    @OnClick(R.id.backClickArea)
+    public void onBackClick(){
+        MFGT.finish(this);
+    }
+
+
 }

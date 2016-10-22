@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
@@ -21,6 +22,7 @@ import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
@@ -147,6 +149,10 @@ public class BoutiqueChildActivity extends BaseActivity {
 
     protected void initData() {
         downloadNewGoods(I.ACTION_DOWNLOAD);
+    }
+    @OnClick(R.id.backClickArea)
+    public void onBackClick(){
+        MFGT.finish(this);
     }
 
 }
