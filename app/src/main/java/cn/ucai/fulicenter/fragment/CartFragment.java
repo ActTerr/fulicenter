@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.CartChildActivity;
+import cn.ucai.fulicenter.utils.MFGT;
 
 /**
  * Created by mac-yk on 2016/10/21.
@@ -23,7 +27,7 @@ public class CartFragment extends BaseFragment {
     EditText etCartSave;
     @BindView(R.id.rv_cart)
     RecyclerView rvCart;
-
+    Activity mContext;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
@@ -50,6 +54,6 @@ public class CartFragment extends BaseFragment {
 
     @OnClick(R.id.btn_cart)
     public void onClick() {
-
+        MFGT.startActivity(mContext,new Intent(mContext, CartChildActivity.class));
     }
 }
