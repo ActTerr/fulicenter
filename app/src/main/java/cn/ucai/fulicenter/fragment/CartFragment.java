@@ -31,7 +31,7 @@ public class CartFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-
+        mContext= (Activity) this.getContext();
         super.onCreateView(inflater, container, savedInstanceState);
         ButterKnife.bind(this, view);
         return view;

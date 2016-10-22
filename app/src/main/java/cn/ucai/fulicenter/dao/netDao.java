@@ -10,6 +10,7 @@ import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.bean.Result2;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MD5;
@@ -92,6 +93,14 @@ public class NetDao {
                 .addParam(I.User.NICK,userNick)
                 .targetClass(Result.class)
                 .post()
+                .execute(listener);
+    }
+    public static void addCollect(Context context, String goodsId, String userName, OkHttpUtils.OnCompleteListener<Result2> listener){
+        OkHttpUtils<Result2> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
+                .addParam(I.USERNAME,userName)
+                .addParam(I.CategoryGood.GOODS_ID,goodsId)
+                .targetClass(Result2.class)
                 .execute(listener);
     }
 }

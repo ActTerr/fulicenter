@@ -1,10 +1,15 @@
 package cn.ucai.fulicenter.activity;
 
+import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -13,6 +18,8 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
+import cn.ucai.fulicenter.bean.Result;
+import cn.ucai.fulicenter.bean.Result2;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
@@ -43,6 +50,12 @@ public class GoodsDetailActivity extends BaseActivity {
     NewGoodsBean goods;
     int goodsId;
     GoodsDetailActivity mContext;
+    @BindView(R.id.layout_image)
+    RelativeLayout layoutImage;
+    @BindView(R.id.layout_banner)
+    RelativeLayout layoutBanner;
+    @BindView(R.id.activity_goods_detail)
+    RelativeLayout activityGoodsDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,16 +64,17 @@ public class GoodsDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_goods_detail);
         ButterKnife.bind(this);
         goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
-        goodsId=goods.getGoodsId();
+        goodsId = goods.getGoodsId();
         L.e("details", "goodsid=" + goodsId);
 
-        if(goodsId==0){
+        if (goodsId == 0) {
             finish();
         }
         mContext = this;
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     protected void setListener() {
 
@@ -71,10 +85,10 @@ public class GoodsDetailActivity extends BaseActivity {
         NetDao.downloadGoodsDetail(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
-                L.i("details="+result);
-                if(result!=null){
+                L.i("details=" + result);
+                if (result != null) {
                     showGoodDetails(result);
-                }else{
+                } else {
                     finish();
                 }
             }
@@ -82,7 +96,7 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 finish();
-                L.e("details,error="+error);
+                L.e("details,error=" + error);
                 CommonUtils.showShortToast(error);
             }
         });
@@ -93,12 +107,12 @@ public class GoodsDetailActivity extends BaseActivity {
         mTvGoodName.setText(details.getGoodsName());
         mTvGoodPriceCurrent.setText(details.getCurrencyPrice());
         mTvGoodPriceShop.setText(details.getShopPrice());
-        mSalv.startPlayLoop(mIndicator,getAlbumImgUrl(details),getAlbumImgCount(details));
-        mWvGoodBrief.loadDataWithBaseURL(null,details.getGoodsBrief(), I.TEXT_HTML,I.UTF_8,null);
+        mSalv.startPlayLoop(mIndicator, getAlbumImgUrl(details), getAlbumImgCount(details));
+        mWvGoodBrief.loadDataWithBaseURL(null, details.getGoodsBrief(), I.TEXT_HTML, I.UTF_8, null);
     }
 
     private int getAlbumImgCount(GoodsDetailsBean details) {
-        if(details.getProperties()!=null && details.getProperties().length>0) {
+        if (details.getProperties() != null && details.getProperties().length > 0) {
             return details.getProperties()[0].getAlbums().length;
         }
         return 0;
@@ -106,10 +120,10 @@ public class GoodsDetailActivity extends BaseActivity {
 
     private String[] getAlbumImgUrl(GoodsDetailsBean details) {
         String[] urls = new String[]{};
-        if(details.getProperties()!=null && details.getProperties().length>0){
+        if (details.getProperties() != null && details.getProperties().length > 0) {
             AlbumsBean[] albums = details.getProperties()[0].getAlbums();
             urls = new String[albums.length];
-            for(int i=0;i<albums.length;i++){
+            for (int i = 0; i < albums.length; i++) {
                 urls[i] = albums[i].getImgUrl();
             }
         }
@@ -122,8 +136,36 @@ public class GoodsDetailActivity extends BaseActivity {
     }
 
     @OnClick(R.id.backClickArea)
-    public void onBackClick(){
+    public void onBackClick() {
         MFGT.finish(this);
     }
 
+    @OnClick({R.id.iv_good_share, R.id.iv_good_collect, R.id.iv_good_cart})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_good_share:
+                new Dialog(this);
+
+                break;
+            case R.id.iv_good_collect:
+                SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+                String userName=sp.getString("name","fail");
+                NetDao.addCollect(mContext, String.valueOf(goodsId), userName, new OkHttpUtils.OnCompleteListener<Result2>() {
+                    @Override
+                    public void onSuccess(Result2 result) {
+                        L.e("main",result.toString());
+                        CommonUtils.showShortToast(result.getMsg());
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        L.e("main",error);
+                        CommonUtils.showShortToast(error);
+                    }
+                });
+                break;
+            case R.id.iv_good_cart:
+                break;
+        }
+    }
 }
