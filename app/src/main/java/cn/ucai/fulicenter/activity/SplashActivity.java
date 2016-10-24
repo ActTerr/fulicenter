@@ -6,14 +6,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.utils.MFGT;
 
 public class SplashActivity extends AppCompatActivity {
     private long time =2000;
+    SplashActivity mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        mContext=this;
     }
 
     @Override
@@ -26,6 +29,8 @@ public class SplashActivity extends AppCompatActivity {
                 long cost=System.currentTimeMillis()-start;
            if(time-cost>0){
                try {
+                   UserDao userDao=new UserDao(mContext);
+                   userDao.getUser("");
                    Thread.sleep(time-cost);
                } catch (InterruptedException e) {
                    e.printStackTrace();

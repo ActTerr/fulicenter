@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="16dp"
-    tools:context="cn.ucai.fulicenter.activity.LoginActivity">
+    tools:context="cn.ucai.fulicenter.activity.UserLoginActivity">
     <include layout="@layout/user_head_title"/>
     <RelativeLayout
         android:layout_width="match_parent"

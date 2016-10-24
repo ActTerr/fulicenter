@@ -21,6 +21,7 @@ import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.dao.NetDao;
+import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
@@ -103,7 +104,7 @@ public class UserLoginActivity extends BaseActivity {
             public void onSuccess(String re) {
                 Result result=ResultUtils.getResultFromJson(re,UserBean.class);
                 L.e("main","s2");
-                pb.dismiss();
+
                 if (result!=null){
                     if (result.getRetCode()==0){
                         CommonUtils.showShortToast(R.string.login);
@@ -113,8 +114,16 @@ public class UserLoginActivity extends BaseActivity {
                         SharedPreferences.Editor editor=sp.edit();
                         editor.putString("name",userName);
                         editor.commit();
+                        UserDao userDao=new UserDao(mContext);
+                        boolean isSuccess= userDao.saveUser(user);
+                        if (isSuccess){
+                            FuLiCenterApplication.setUser(user);
+                        }else {
+                            CommonUtils.showShortToast(R.string.user_databases_error);
+                        }
                         L.e("main","sp放入数据 "+userName);
-                        MFGT.gotoMainActivity(mContext);
+                        MFGT.finish(mContext);
+                        //MFGT.gotoMainActivity(mContext);
 
                     }else {
                         if(result.getRetCode()==I.MSG_LOGIN_ERROR_PASSWORD){
@@ -124,7 +133,9 @@ public class UserLoginActivity extends BaseActivity {
                         }
 
                     }
+
                 }
+                pb.dismiss();
             }
 
             @Override

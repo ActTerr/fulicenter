@@ -119,9 +119,9 @@ public class MainActivity extends BaseActivity {
             case R.id.rbPersonal:
                 if(FuLiCenterApplication.getUserName()==null){
                     MFGT.startActivity(this,new Intent(this, UserLoginActivity.class));
-                }else {
-                    index=4;
                 }
+                index=4;
+
 
                 break;
         }

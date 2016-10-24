@@ -2,12 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:background="@color/holo_red_light"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
        >
         <TextView
-
+            android:layout_toLeftOf="@+id/iv_personal_1"
             android:layout_marginRight="10dp"
             android:text="设置"
             android:textSize="25sp"
@@ -16,8 +21,117 @@
         <ImageView
             android:id="@+id/iv_personal_1"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/menu_item_category_normal"
+            android:src="@drawable/tb_icon_more_msg_white_56"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+     <ImageView
+         android:paddingLeft="10dp"
+         android:id="@+id/iv_personal_avatar"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+         android:src="@drawable/nopic"/>
+    <TextView
+        android:paddingLeft="10dp"
+        android:layout_toRightOf="@+id/iv_personal_avatar"
+        android:id="@+id/tv_personal_name"
+        android:text="a"
+        android:textSize="30sp"
+        android:layout_centerVertical="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+       <ImageView
+           android:layout_centerVertical="true"
+           android:paddingLeft="15dp"
+           android:layout_toRightOf="@+id/tv_personal_name"
+           android:id="@+id/iv_personal_qrcode"
+           android:src="@drawable/tb_icon_home_qrcode_gray"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:hint="3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView android:layout_gravity="center_horizontal"
+                android:text="收藏的宝贝"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <EditText
+                android:layout_gravity="center_horizontal"
+                android:hint="20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:text="收藏的店铺"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <EditText
+                android:hint="58"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_gravity="center_horizontal"
+                android:text="我的足迹"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的订单"/>
+        <TextView
+            android:textSize="18sp"
+            android:layout_toLeftOf="@+id/tv11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看全部宝贝"/>
+        <ImageView
+            android:id="@+id/tv11"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right_arrow_icon"/>
+    </RelativeLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </LinearLayout>
