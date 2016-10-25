@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.dao;
 
 import android.content.Context;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.bean.BoutiqueBean;
@@ -111,6 +112,17 @@ public class NetDao {
                 .addParam(I.COUNT,count)
                 .addParam(I.ISCHECKED,isChecked)
                 .targetClass(Result2.class)
+                .execute(listener);
+    }
+    public static void updateAvatar(Context context,String userName,String avatarType,OkHttpUtils.OnCompleteListener<Result> listener){
+        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
+        File file=new File("/Users/mac-yk/Downloads/a.jpg");
+        utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
+                .addParam(I.NAME_OR_HXID,userName)
+                .addParam(I.AVATAR_TYPE,avatarType)
+                .addFile(file)
+                .post()
+                .targetClass(Result.class)
                 .execute(listener);
     }
 }

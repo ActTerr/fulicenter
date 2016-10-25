@@ -24,4 +24,5 @@
     <string name="login_fail_pwderror">输入的用户密码错误</string>
     <string name="login_fail_noUser">用户不存在</string>
     <string name="user_databases_error">user databases error</string>
+    <string name="title_activity_qrcode">QRcodeActivity</string>
 </resources>

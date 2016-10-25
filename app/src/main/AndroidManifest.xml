@@ -24,7 +24,8 @@
         <activity android:name=".activity.CategoryChildActivity" />
         <activity android:name=".activity.UserLoginActivity" />
         <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.CartChildActivity"></activity>
+        <activity android:name=".activity.CartChildActivity" />
+        <activity android:name=".activity.PersonalChildActivity" />
     </application>
 
 </manifest>

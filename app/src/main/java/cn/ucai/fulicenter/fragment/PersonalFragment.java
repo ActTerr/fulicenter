@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.PersonalChildActivity;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
@@ -62,6 +64,7 @@ public class PersonalFragment extends BaseFragment {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tv_personal_set:
+                MFGT.startActivity(mContext,new Intent(mContext, PersonalChildActivity.class));
                 break;
             case R.id.iv_personal_message:
                 break;
