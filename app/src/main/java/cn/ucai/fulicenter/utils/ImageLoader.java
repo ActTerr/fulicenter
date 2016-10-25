@@ -362,9 +362,9 @@ public class ImageLoader {
     // a123321a&avatarType=user_avatar&m_avatar_suffix=.jpg&width=40&height=40
     public static String getAvatarUrl(UserBean user){
         if(user!=null){
-            String url=I.DOWNLOAD_AVATAR_URL+I.NAME_OR_HXID+"="+user.getMuserName()
-                    +"&"+I.AVATAR_TYPE+"="+user.getMavatarType()+"&"+I.AVATAR_SUFFIX+"="
-                    +user.getMavatarSuffix()+"&"+"width=200&height=200";
+            String url = I.DOWNLOAD_AVATAR_URL + I.NAME_OR_HXID + "=" + user.getMuserName()
+                    + I.AND + I.AVATAR_TYPE + "=" + user.getMavatarPath() + I.AND + I.AVATAR_SUFFIX
+                    + "=" + user.getMavatarSuffix() + I.AND + "width=200&height=200"+"&"+ user.getMavatarLastUpdateTime();
             return url;
         }
         return null;

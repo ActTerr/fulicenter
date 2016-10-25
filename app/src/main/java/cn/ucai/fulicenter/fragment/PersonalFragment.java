@@ -30,6 +30,8 @@ public class PersonalFragment extends BaseFragment {
     @BindView(R.id.tv_personal_name)
     TextView tvPersonalName;
 
+    UserBean user;
+    String userNick;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
@@ -72,4 +74,13 @@ public class PersonalFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        user=FuLiCenterApplication.getUser();
+        if(user!=null){
+            ImageLoader.setAvatar(mContext,ImageLoader.getAvatarUrl(user),ivPersonalAvatar);
+            tvPersonalName.setText(user.getMuserNick());
+        }
+    }
 }
