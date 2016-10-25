@@ -19,6 +19,7 @@ import cn.ucai.fulicenter.fragment.CartFragment;
 import cn.ucai.fulicenter.fragment.CategoryFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.fragment.PersonalFragment;
+import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 
@@ -132,5 +133,22 @@ public class MainActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(FuLiCenterApplication.getUser()!=null){
+            index=4;
+        }
+        setFragment();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode== I.REQUEST_CODE_LOGIN&&FuLiCenterApplication.getUser()!=null){
+            index=4;
+        }
     }
 }
