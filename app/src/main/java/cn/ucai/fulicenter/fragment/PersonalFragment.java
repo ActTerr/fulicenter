@@ -34,8 +34,9 @@ public class PersonalFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
         mContext = getContext();
-        super.onCreateView(inflater, container, savedInstanceState);
+
         ButterKnife.bind(this, view);
+        super.onCreateView(inflater, container, savedInstanceState);
         return view;
     }
 

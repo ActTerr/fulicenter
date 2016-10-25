@@ -29,6 +29,7 @@ import cn.ucai.fulicenter.utils.MD5;
 import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ResultUtils;
+import cn.ucai.fulicenter.utils.SharePrefrenceUtils;
 
 public class UserLoginActivity extends BaseActivity {
 
@@ -110,19 +111,21 @@ public class UserLoginActivity extends BaseActivity {
                         CommonUtils.showShortToast(R.string.login);
                         user= (UserBean) result.getRetData();
                         //L.e(user.toString());
-                        SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
-                        SharedPreferences.Editor editor=sp.edit();
-                        editor.putString("name",userName);
-                        editor.commit();
+//                        SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
+//                        SharedPreferences.Editor editor=sp.edit();
+//                        editor.putString("name",userName);
+//                        editor.commit();
                         UserDao userDao=new UserDao(mContext);
                         boolean isSuccess= userDao.saveUser(user);
                         if (isSuccess){
+                            SharePrefrenceUtils.getInstance(mContext).saveUser(userName);
                             FuLiCenterApplication.setUser(user);
+                            MFGT.finish(mContext);
                         }else {
                             CommonUtils.showShortToast(R.string.user_databases_error);
                         }
                         L.e("main","sp放入数据 "+userName);
-                        MFGT.finish(mContext);
+
                         //MFGT.gotoMainActivity(mContext);
 
                     }else {
@@ -146,6 +149,12 @@ public class UserLoginActivity extends BaseActivity {
         });
     }
 
-
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==RESULT_OK&&requestCode==I.REQUEST_CODE_REGISTER){
+            String name=data.getStringExtra(I.User.USER_NAME);
+            etLoginName.setText(name);
+        }
+    }
 }

@@ -24,11 +24,16 @@ import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 
 public class MainActivity extends BaseActivity {
-    @BindView(R.id.rbBoutique) RadioButton rbBoutique;
-    @BindView(R.id.rbCart) RadioButton rbCart;
-    @BindView(R.id.rbNewGood) RadioButton rbNewGood;
-    @BindView(R.id.rbCategory) RadioButton rbCategory;
-    @BindView(R.id.rbPersonal) RadioButton rbPersonal;
+    @BindView(R.id.rbBoutique)
+    RadioButton rbBoutique;
+    @BindView(R.id.rbCart)
+    RadioButton rbCart;
+    @BindView(R.id.rbNewGood)
+    RadioButton rbNewGood;
+    @BindView(R.id.rbCategory)
+    RadioButton rbCategory;
+    @BindView(R.id.rbPersonal)
+    RadioButton rbPersonal;
     int index;
     RadioButton[] btns;
     NewGoodsFragment newGoodsFragment;
@@ -49,39 +54,39 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initFragment() {
-        fragments=new Fragment[5];
-        newGoodsFragment =new NewGoodsFragment();
-        boutiqueFragment=new BoutiqueFragment();
-        categoryFragment=new CategoryFragment();
-        pensonalFragment=new PersonalFragment();
-        cartFragment=new CartFragment();
-        fragments[0]=newGoodsFragment;
-        fragments[1]=boutiqueFragment;
-        fragments[2]=categoryFragment;
-        fragments[3]=cartFragment;
-        fragments[4]=pensonalFragment;
-        FragmentManager manger=getSupportFragmentManager();
+        fragments = new Fragment[5];
+        newGoodsFragment = new NewGoodsFragment();
+        boutiqueFragment = new BoutiqueFragment();
+        categoryFragment = new CategoryFragment();
+        pensonalFragment = new PersonalFragment();
+        cartFragment = new CartFragment();
+        fragments[0] = newGoodsFragment;
+        fragments[1] = boutiqueFragment;
+        fragments[2] = categoryFragment;
+        fragments[3] = cartFragment;
+        fragments[4] = pensonalFragment;
+        FragmentManager manger = getSupportFragmentManager();
         FragmentTransaction transaction = manger.beginTransaction();
         transaction.add(R.id.fragment_container, newGoodsFragment)
                 .add(R.id.fragment_container, boutiqueFragment)
                 .hide(boutiqueFragment)
                 .show(newGoodsFragment)
                 .commit();
-        Log.i("main","finishinitFragment");
+        Log.i("main", "finishinitFragment");
     }
 
     @Override
     protected void initView() {
-        btns= new RadioButton[]{rbNewGood,rbBoutique,rbCategory,rbCart,rbPersonal};
+        btns = new RadioButton[]{rbNewGood, rbBoutique, rbCategory, rbCart, rbPersonal};
         initFragment();
     }
 
     private void setRadioButtonStatus() {
-        L.e("index"+index);
-        for(int i=0;i<btns.length;i++){
-            if(i==index){
+        L.e("index" + index);
+        for (int i = 0; i < btns.length; i++) {
+            if (i == index) {
                 btns[i].setChecked(true);
-            }else {
+            } else {
                 btns[i].setChecked(false);
             }
         }
@@ -89,40 +94,40 @@ public class MainActivity extends BaseActivity {
     }
 
     public void setFragment() {
-        if(currentIndex!=index){
-            FragmentTransaction ft=getSupportFragmentManager().beginTransaction();
+        if (currentIndex != index) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.hide(fragments[currentIndex]);
-            if(!fragments[index].isAdded()){
-                ft.add(R.id.fragment_container,fragments[index]);
+            if (!fragments[index].isAdded()) {
+                ft.add(R.id.fragment_container, fragments[index]);
             }
             ft.show(fragments[index]).commit();
             setRadioButtonStatus();
-            currentIndex=index;
+            currentIndex = index;
         }
     }
 
-    public void onCheckedChange(View v){
+    public void onCheckedChange(View v) {
         L.i("changeclicked");
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.rbNewGood:
-                index=0;
+                index = 0;
                 break;
             case R.id.rbBoutique:
                 L.e("clicked");
-                index=1;
+                index = 1;
                 break;
             case R.id.rbCategory:
-                index=2;
+                index = 2;
                 break;
             case R.id.rbCart:
-                index=3;
+                index = 3;
                 break;
             case R.id.rbPersonal:
-                if(FuLiCenterApplication.getUserName()==null){
-                    MFGT.startActivity(this,new Intent(this, UserLoginActivity.class));
+                if (FuLiCenterApplication.getUser() == null) {
+                    MFGT.gotoLoginActivity(this);
+                } else {
+                    index = 4;
                 }
-                index=4;
-
 
                 break;
         }
@@ -138,19 +143,15 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(FuLiCenterApplication.getUser()!=null){
-
-        }else {
-            index=4;
-        }
         setFragment();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode== I.REQUEST_CODE_LOGIN&&FuLiCenterApplication.getUser()!=null){
-            index=4;
+        if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
+            L.e("main","success get result");
+            index = 4;
         }
     }
 }

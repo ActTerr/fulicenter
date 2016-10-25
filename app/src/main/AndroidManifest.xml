@@ -26,6 +26,7 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.CartChildActivity" />
         <activity android:name=".activity.PersonalChildActivity" />
+        <activity android:name=".activity.QRcodeActivity"/>
     </application>
 
 </manifest>

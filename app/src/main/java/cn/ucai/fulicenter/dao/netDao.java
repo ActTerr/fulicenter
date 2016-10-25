@@ -114,14 +114,21 @@ public class NetDao {
                 .targetClass(Result2.class)
                 .execute(listener);
     }
-    public static void updateAvatar(Context context,String userName,String avatarType,OkHttpUtils.OnCompleteListener<Result> listener){
+    public static void updateAvatar(Context context,String userName,String avatarType,File file,OkHttpUtils.OnCompleteListener<Result> listener){
         OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
-        File file=new File("/Users/mac-yk/Downloads/a.jpg");
         utils.setRequestUrl(I.REQUEST_UPDATE_AVATAR)
                 .addParam(I.NAME_OR_HXID,userName)
                 .addParam(I.AVATAR_TYPE,avatarType)
                 .addFile(file)
                 .post()
+                .targetClass(Result.class)
+                .execute(listener);
+    }
+    public static void updateNick(Context context,String userName,String nick,OkHttpUtils.OnCompleteListener<Result> listener){
+        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
+                .addParam(I.User.USER_NAME,userName)
+                .addParam(I.User.NICK,nick)
                 .targetClass(Result.class)
                 .execute(listener);
     }

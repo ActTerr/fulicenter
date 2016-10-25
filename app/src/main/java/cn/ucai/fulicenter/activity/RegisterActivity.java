@@ -107,10 +107,11 @@ public class RegisterActivity extends BaseActivity {
             public void onSuccess(Result result) {
                 if(result!=null){
                     pb.dismiss();
-                    if(result.getRetCode()==0){
+                    if(result.isRetMsg()){
                         CommonUtils.showShortToast(R.string.register_success);
-                        FuLiCenterApplication.setUserName(userName);
-                        MFGT.startActivity(mContext,new Intent(mContext,UserLoginActivity.class));
+                        //FuLiCenterApplication.setUserName(userName);
+                        setResult(RESULT_OK,new Intent().putExtra(I.User.USER_NAME,userName));
+                       // MFGT.startActivity(mContext,new Intent(mContext,UserLoginActivity.class));
                         MFGT.finish(mContext);
                     }else {
 
