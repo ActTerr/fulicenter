@@ -279,6 +279,7 @@ public interface I {
     String AVATAR_TYPE_GROUP_PATH ="group_icon";//群组头像保存目录
     String AVATAR_SUFFIX_PNG=".png";//PNG图片后缀名
     String AVATAR_SUFFIX_JPG=".jpg";//JPG图片后缀名
+    String AVATAR_SUFFIX="m_avatar_suffix";
     String QUESTION = "?";//问号
     String EQUAL = "="; //等号
     String AND = "&"; //&符号
@@ -420,4 +421,7 @@ public interface I {
             REQUEST_DOWNLOAD_IMAGE+I.QUESTION+ IMAGE_URL+"=";
     /** 用户帐号*/
     String USERNAME="userName";
+    //http://101.251.196.90:8000/FuLiCenterServerV2.0/downloadAvatar?name_or_hxid
+    // =a123321a&avatarType=user_avatar&m_avatar_suffix=.jpg&width=40&height=40
+    String DOWNLOAD_AVATAR_URL=I.SERVER_ROOT+REQUEST_DOWNLOAD_AVATAR+I.QUESTION;
 }

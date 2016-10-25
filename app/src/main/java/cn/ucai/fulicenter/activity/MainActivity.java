@@ -139,6 +139,8 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if(FuLiCenterApplication.getUser()!=null){
+
+        }else {
             index=4;
         }
         setFragment();
