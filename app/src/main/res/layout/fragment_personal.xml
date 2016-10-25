@@ -12,14 +12,15 @@
         android:layout_height="30dp"
        >
         <TextView
-            android:layout_toLeftOf="@+id/iv_personal_1"
+            android:id="@+id/tv_personal_set"
+            android:layout_toLeftOf="@+id/iv_personal_message"
             android:layout_marginRight="10dp"
             android:text="设置"
             android:textSize="25sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <ImageView
-            android:id="@+id/iv_personal_1"
+            android:id="@+id/iv_personal_message"
             android:layout_alignParentRight="true"
             android:src="@drawable/tb_icon_more_msg_white_56"
             android:layout_width="wrap_content"
@@ -31,8 +32,8 @@
      <ImageView
          android:paddingLeft="10dp"
          android:id="@+id/iv_personal_avatar"
-         android:layout_width="40dp"
-         android:layout_height="40dp"
+         android:layout_width="60dp"
+         android:layout_height="60dp"
          android:src="@drawable/nopic"/>
     <TextView
         android:paddingLeft="10dp"
@@ -107,7 +108,7 @@
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
         <TextView
             android:textSize="20sp"
             android:layout_width="wrap_content"
@@ -131,7 +132,105 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/order_list1"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/order_list2"/>
+        <Button
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/order_list3"/>
+        <Button
+            android:background="@drawable/order_list4"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:background="@drawable/order_list5"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:background="#666666"></LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <TextView
+            android:text="我的卡卷包"
+            android:textSize="20sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-    </LinearLayout>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/right_arrow_icon"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp">
+        <ImageView
+            android:id="@+id/iv_personal_coupon1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/center_card_coupon1"/>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow_icon"/>
+        <TextView
+            android:layout_toRightOf="@+id/iv_personal_coupon1"
+            android:text="生活卷"
+            android:layout_centerVertical="true"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/center_card_coupon2"/>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/center_card_coupon3"/>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/right_arrow_icon"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
 </LinearLayout>
