@@ -3,23 +3,24 @@ package cn.ucai.fulicenter.activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
-import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.Result2;
+import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
@@ -57,6 +58,10 @@ public class GoodsDetailActivity extends BaseActivity {
     @BindView(R.id.activity_goods_detail)
     RelativeLayout activityGoodsDetail;
     String userName;
+    boolean isCollect=false;
+    @BindView(R.id.iv_good_collect)
+    ImageView ivGoodCollect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,8 +70,8 @@ public class GoodsDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
         goodsId = goods.getGoodsId();
-        SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
-        userName=sp.getString("name","fail");
+        SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+        userName = sp.getString("name", "fail");
         L.e("details", "goodsid=" + goodsId);
 
         if (goodsId == 0) {
@@ -146,38 +151,97 @@ public class GoodsDetailActivity extends BaseActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_good_share:
-                new Dialog(this);
+                Dialog dialog = new Dialog(this);
+                dialog.setCancelable(true);
+                dialog.setCanceledOnTouchOutside(true);
+                //dialog.setContentView(R.layout.);
+
 
                 break;
             case R.id.iv_good_collect:
-
-                NetDao.addCollect(mContext, String.valueOf(goodsId), userName, new OkHttpUtils.OnCompleteListener<Result2>() {
+                UserBean user = FuLiCenterApplication.getUser();
+                if (user != null) {
+                    if (isCollect ==false) {
+                        Collected();
+                        Log.i("main", "进入收藏分支");
+                    } else {
+                        cancelCollected();
+                        Log.i("main", "进入cancel收藏分支");
+                    }
+                }
+                break;
+            case R.id.iv_good_cart:
+                NetDao.addCart(mContext, String.valueOf(goodsId), userName, "1", I.ISCHECKED, new OkHttpUtils.OnCompleteListener<Result2>() {
                     @Override
                     public void onSuccess(Result2 result) {
-                        L.e("main",result.toString());
                         CommonUtils.showShortToast(result.getMsg());
                     }
 
                     @Override
                     public void onError(String error) {
-                        L.e("main",error);
                         CommonUtils.showShortToast(error);
                     }
                 });
                 break;
-            case R.id.iv_good_cart:
-                    NetDao.addCart(mContext, String.valueOf(goodsId), userName, "1", I.ISCHECKED, new OkHttpUtils.OnCompleteListener<Result2>() {
-                        @Override
-                        public void onSuccess(Result2 result) {
-                            CommonUtils.showShortToast(result.getMsg());
-                        }
-
-                        @Override
-                        public void onError(String error) {
-                            CommonUtils.showShortToast(error);
-                        }
-                    });
-                break;
         }
+    }
+
+    private void cancelCollected() {
+        NetDao.deleteCollects(mContext, goodsId, userName, new OkHttpUtils.OnCompleteListener<Result2>() {
+            @Override
+            public void onSuccess(Result2 result) {
+                if(result!=null){
+                    CommonUtils.showShortToast("取消收藏");
+                    isCollect=false;
+                }else {
+                    isCollect=true;
+                }
+                updateGoodsStatus();
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
+    }
+
+    private void Collected() {
+
+            NetDao.addCollect(mContext, String.valueOf(goodsId), userName, new OkHttpUtils.OnCompleteListener<Result2>() {
+                @Override
+                public void onSuccess(Result2 result) {
+                    if (result!=null){
+                        L.e("main", result.toString());
+                        CommonUtils.showShortToast(result.getMsg());
+                        isCollect = true;
+                    }else {
+                        isCollect=false;
+                    }
+
+                    updateGoodsStatus();
+                }
+
+                @Override
+                public void onError(String error) {
+                    L.e("main", error);
+                    CommonUtils.showShortToast(error);
+                }
+            });
+            updateGoodsStatus();
+        }
+
+
+    private void updateGoodsStatus() {
+        if (isCollect==true) {
+        ivGoodCollect.setImageResource(R.mipmap.bg_collect_out);
+        }else {
+            ivGoodCollect.setImageResource(R.mipmap.bg_collect_in);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

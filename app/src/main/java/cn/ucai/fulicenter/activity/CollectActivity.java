@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -30,7 +31,7 @@ import cn.ucai.fulicenter.views.SpaceItemDecoration;
  */
 
 public class CollectActivity extends BaseActivity {
-    Context mContext;
+    Activity mContext;
     UserBean user;
     int pageId = 1;
     ArrayList<CollectBean> mList;
@@ -148,8 +149,9 @@ public class CollectActivity extends BaseActivity {
         });
     }
 
+
     @OnClick(R.id.btn_back)
     public void onClick() {
-        MFGT.finish(this);
+        MFGT.finish(mContext);
     }
 }
