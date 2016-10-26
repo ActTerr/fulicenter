@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.dao;
 
 import android.content.Context;
+import android.os.Message;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.Result2;
@@ -130,6 +132,13 @@ public class NetDao {
                 .addParam(I.User.USER_NAME,userName)
                 .addParam(I.User.NICK,nick)
                 .targetClass(Result.class)
+                .execute(listener);
+    }
+    public static void getCollectCount(Context context, String userName, OkHttpUtils.OnCompleteListener<MessageBean> listener){
+        OkHttpUtils<MessageBean> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                .addParam(I.USERNAME,userName)
+                .targetClass(MessageBean.class)
                 .execute(listener);
     }
 }
