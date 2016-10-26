@@ -38,7 +38,12 @@ public class MFGT {
         intent.putExtra(I.GoodsDetails.KEY_GOODS,goods);
         startActivity(context,intent);
     }
-
+    public static void gotoGoodsDetailsActivity(Context context,CollectBean goods){
+        Intent intent=new Intent();
+        intent.setClass(context,GoodsDetailActivity.class);
+        intent.putExtra(I.GoodsDetails.KEY_GOODS_ID,goods);
+        startActivity(context,intent);
+    }
     public static void startActivity(Context context,Intent intent){
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);

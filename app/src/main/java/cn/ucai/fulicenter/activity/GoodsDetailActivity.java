@@ -17,6 +17,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.AlbumsBean;
+import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.bean.Result2;
@@ -49,6 +50,7 @@ public class GoodsDetailActivity extends BaseActivity {
     @BindView(R.id.wv_good_brief)
     WebView mWvGoodBrief;
     NewGoodsBean goods;
+    CollectBean collects;
     int goodsId;
     GoodsDetailActivity mContext;
     @BindView(R.id.layout_image)
@@ -69,13 +71,18 @@ public class GoodsDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_goods_detail);
         ButterKnife.bind(this);
         goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
-        goodsId = goods.getGoodsId();
+        collects= (CollectBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_ID);
+        if (goods!=null){
+            goodsId=goods.getGoodsId();
+        }else {
+            goodsId=collects.getGoodsId();
+        }
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         userName = sp.getString("name", "fail");
         L.e("details", "goodsid=" + goodsId);
 
         if (goodsId == 0) {
-            finish();
+           finish();
         }
         mContext = this;
         super.onCreate(savedInstanceState);

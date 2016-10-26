@@ -75,6 +75,10 @@ public class CollectActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        user=FuLiCenterApplication.getUser();
+        if (user==null){
+            finish();
+        }
         downloadCollects(I.ACTION_DOWNLOAD);
     }
 
@@ -153,5 +157,11 @@ public class CollectActivity extends BaseActivity {
     @OnClick(R.id.btn_back)
     public void onClick() {
         MFGT.finish(mContext);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
     }
 }

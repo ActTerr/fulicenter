@@ -16,13 +16,12 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.CollectBean;
-import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.bean.Result2;
-import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 
 /**
@@ -34,12 +33,14 @@ public class CollectAdapter extends RecyclerView.Adapter {
     List<CollectBean> mList;
 
     boolean isMore;
+
     public CollectAdapter(Context mContext, List<CollectBean> mList) {
         this.mContext = mContext;
         this.mList = new ArrayList<>();
         this.mList.addAll(mList);
 
     }
+
     public boolean isMore() {
         return isMore;
     }
@@ -48,23 +49,24 @@ public class CollectAdapter extends RecyclerView.Adapter {
         isMore = more;
         notifyDataSetChanged();
     }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder = null;
         if (viewType == I.TYPE_FOOTER) {
             holder = new FooterViewHolder(View.inflate(mContext, R.layout.item_footer, null));
         } else {
-             holder = new CollectViewHolder(View.inflate(mContext, R.layout.item_collect, null));
+            holder = new CollectViewHolder(View.inflate(mContext, R.layout.item_collect, null));
         }
         return holder;
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if(getItemViewType(position)==I.TYPE_FOOTER){
-           FooterViewHolder vh = (FooterViewHolder) holder;
+        if (getItemViewType(position) == I.TYPE_FOOTER) {
+            FooterViewHolder vh = (FooterViewHolder) holder;
             vh.mTvFooter.setText(getFootString());
-        }else {
+        } else {
             CollectViewHolder cvh = (CollectViewHolder) holder;
             CollectBean goods = mList.get(position);
             ImageLoader.downloadImg(mContext, cvh.ivCollect, goods.getGoodsThumb());
@@ -83,14 +85,15 @@ public class CollectAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         if (position == getItemCount() - 1) {
             return I.TYPE_FOOTER;
-        }else {
+        } else {
             return I.TYPE_ITEM;
         }
     }
 
     private int getFootString() {
-        return isMore?R.string.load_more:R.string.no_more;
+        return isMore ? R.string.load_more : R.string.no_more;
     }
+
 
     class CollectViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_collect)
@@ -98,16 +101,22 @@ public class CollectAdapter extends RecyclerView.Adapter {
         @BindView(R.id.tv_collect)
         TextView tvCollect;
         @BindView(R.id.iv_delete)
-         ImageView ivDelete;
+        ImageView ivDelete;
 
         CollectViewHolder(View view) {
             super(view);
-            ButterKnife.bind(this,view);
+            ButterKnife.bind(this, view);
         }
+        @OnClick(R.id.item_collect)
+        public void onClick() {
+            CollectBean goods= (CollectBean) ivDelete.getTag();
+            MFGT.gotoGoodsDetailsActivity(mContext,goods);
+        }
+
         @OnClick(R.id.iv_delete)
-        public void delete(){
-            final CollectBean collects= (CollectBean) ivDelete.getTag();
-            final int goodsId=collects.getGoodsId();
+        public void delete() {
+            final CollectBean collects = (CollectBean) ivDelete.getTag();
+            final int goodsId = collects.getGoodsId();
             NetDao.deleteCollects(mContext, goodsId, FuLiCenterApplication.getUser().getMuserName(), new OkHttpUtils.OnCompleteListener<Result2>() {
                 @Override
                 public void onSuccess(Result2 result) {
@@ -122,13 +131,15 @@ public class CollectAdapter extends RecyclerView.Adapter {
             });
         }
     }
-    public void initData(ArrayList<CollectBean> list){
-        if(mList!=null){
+
+    public void initData(ArrayList<CollectBean> list) {
+        if (mList != null) {
             mList.clear();
         }
         mList.addAll(list);
         notifyDataSetChanged();
     }
+
     static class FooterViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tvFooter)
         TextView mTvFooter;
@@ -138,6 +149,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
     }
+
     public void addData(ArrayList<CollectBean> list) {
         mList.addAll(list);
         notifyDataSetChanged();
