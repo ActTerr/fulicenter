@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.CollectActivity;
 import cn.ucai.fulicenter.activity.PersonalChildActivity;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.MessageBean;
@@ -69,7 +70,7 @@ public class PersonalFragment extends BaseFragment {
         NetDao.getCollectCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
             @Override
             public void onSuccess(MessageBean result) {
-                if(result!=null){
+                if (result != null) {
                     tvCollectCount.setText(result.getMsg());
                 }
             }
@@ -106,5 +107,10 @@ public class PersonalFragment extends BaseFragment {
             tvPersonalName.setText(user.getMuserNick());
             getCollectCount();
         }
+    }
+
+    @OnClick(R.id.ll_collect)
+    public void onClick() {
+        MFGT.startActivity(mContext,new Intent(mContext, CollectActivity.class));
     }
 }
