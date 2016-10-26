@@ -151,5 +151,13 @@ public class NetDao {
                 .targetClass(CollectBean[].class)
                 .execute(listener);
     }
+    public static void deleteCollects(Context context,int goodsId,String username,OkHttpUtils.OnCompleteListener<Result2> listener){
+        OkHttpUtils<Result2> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_COLLECT)
+                .addParam(I.USERNAME,username)
+                .addParam(I.Goods.KEY_GOODS_ID,String.valueOf(goodsId))
+                .targetClass(Result2.class)
+                .execute(listener);
+    }
 
 }

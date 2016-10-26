@@ -12,11 +12,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
+import cn.ucai.fulicenter.bean.Result2;
+import cn.ucai.fulicenter.bean.UserBean;
+import cn.ucai.fulicenter.dao.NetDao;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.OkHttpUtils;
 
 /**
  * Created by mac-yk on 2016/10/26.
@@ -31,6 +38,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
         this.mContext = mContext;
         this.mList = new ArrayList<>();
         this.mList.addAll(mList);
+
     }
     public boolean isMore() {
         return isMore;
@@ -61,6 +69,8 @@ public class CollectAdapter extends RecyclerView.Adapter {
             CollectBean goods = mList.get(position);
             ImageLoader.downloadImg(mContext, cvh.ivCollect, goods.getGoodsThumb());
             cvh.tvCollect.setText(goods.getGoodsName());
+            cvh.ivDelete.setTag(goods);
+
         }
     }
 
@@ -82,15 +92,34 @@ public class CollectAdapter extends RecyclerView.Adapter {
         return isMore?R.string.load_more:R.string.no_more;
     }
 
-    static class CollectViewHolder extends RecyclerView.ViewHolder {
+    class CollectViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_collect)
         ImageView ivCollect;
         @BindView(R.id.tv_collect)
         TextView tvCollect;
+        @BindView(R.id.iv_delete)
+         ImageView ivDelete;
 
         CollectViewHolder(View view) {
             super(view);
             ButterKnife.bind(this,view);
+        }
+        @OnClick(R.id.iv_delete)
+        public void delete(){
+            final CollectBean collects= (CollectBean) ivDelete.getTag();
+            final int goodsId=collects.getGoodsId();
+            NetDao.deleteCollects(mContext, goodsId, FuLiCenterApplication.getUser().getMuserName(), new OkHttpUtils.OnCompleteListener<Result2>() {
+                @Override
+                public void onSuccess(Result2 result) {
+                    mList.remove(collects);
+                    CommonUtils.showShortToast(result.getMsg());
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
         }
     }
     public void initData(ArrayList<CollectBean> list){

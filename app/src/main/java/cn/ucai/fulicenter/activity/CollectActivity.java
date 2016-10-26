@@ -12,19 +12,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.CollectAdapter;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.CollectBean;
-import cn.ucai.fulicenter.bean.CollectBean;
-import cn.ucai.fulicenter.bean.NewGoodsBean;
-import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
-import cn.ucai.fulicenter.utils.ResultUtils;
 import cn.ucai.fulicenter.views.SpaceItemDecoration;
 
 /**
@@ -34,7 +32,7 @@ import cn.ucai.fulicenter.views.SpaceItemDecoration;
 public class CollectActivity extends BaseActivity {
     Context mContext;
     UserBean user;
-    int pageId=1;
+    int pageId = 1;
     ArrayList<CollectBean> mList;
 
     @BindView(R.id.tv_refresh)
@@ -45,14 +43,15 @@ public class CollectActivity extends BaseActivity {
     SwipeRefreshLayout mSrl;
     CollectAdapter mAdapter;
     GridLayoutManager glm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_collect);
         ButterKnife.bind(this);
         mContext = this;
         mList = new ArrayList<>();
-        mAdapter= new CollectAdapter(mContext, mList);
-        user= FuLiCenterApplication.getUser();
+        mAdapter = new CollectAdapter(mContext, mList);
+        user = FuLiCenterApplication.getUser();
         super.onCreate(savedInstanceState);
     }
 
@@ -84,6 +83,7 @@ public class CollectActivity extends BaseActivity {
         setPullUpListener();
         setPullDownListener();
     }
+
     private void setPullDownListener() {
         mSrl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -103,7 +103,7 @@ public class CollectActivity extends BaseActivity {
                 mSrl.setRefreshing(false);
                 mTvRefresh.setVisibility(View.GONE);
                 mAdapter.setMore(true);
-                if (result != null ) {
+                if (result != null) {
                     ArrayList<CollectBean> list = ConvertUtils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mAdapter.initData(list);
@@ -146,5 +146,10 @@ public class CollectActivity extends BaseActivity {
                 mSrl.setEnabled(firstPosition == 0);
             }
         });
+    }
+
+    @OnClick(R.id.btn_back)
+    public void onClick() {
+        MFGT.finish(this);
     }
 }
