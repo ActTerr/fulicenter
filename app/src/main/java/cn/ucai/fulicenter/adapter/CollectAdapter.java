@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.IntentSender;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +123,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
                 public void onSuccess(Result2 result) {
                     mList.remove(collects);
                     CommonUtils.showShortToast(result.getMsg());
+                    
                 }
 
                 @Override
@@ -154,4 +156,6 @@ public class CollectAdapter extends RecyclerView.Adapter {
         mList.addAll(list);
         notifyDataSetChanged();
     }
+
+
 }

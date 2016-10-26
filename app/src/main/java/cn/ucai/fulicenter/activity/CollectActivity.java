@@ -1,7 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -163,5 +165,12 @@ public class CollectActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         initData();
+
     }
+    BroadcastReceiver receiver=new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            intent.getSerializableExtra("");
+        }
+    };
 }
