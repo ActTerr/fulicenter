@@ -174,4 +174,20 @@ public class NetDao {
                 .targetClass(CartBean[].class)
                 .execute(listener);
     }
+    public static void updateCartCount(Context context,int cartId,int count,boolean ischecked,OkHttpUtils.OnCompleteListener<Result2> listener){
+        OkHttpUtils<Result2> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_UPDATE_CART)
+                .addParam(I.ID,String.valueOf(cartId))
+                .addParam(I.COUNT,String.valueOf(count))
+                .addParam(I.ISCHECKED,String.valueOf(ischecked))
+                .targetClass(Result2.class)
+                .execute(listener);
+    }
+    public static void deleteCart(Context context,int cartId,OkHttpUtils.OnCompleteListener<Result2> listener){
+        OkHttpUtils<Result2> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_CART)
+                .addParam(I.ID,String.valueOf(cartId))
+                .targetClass(Result2.class)
+                .execute(listener);
+    }
 }

@@ -1,6 +1,8 @@
 package cn.ucai.fulicenter.utils;
 
 
+import android.content.Context;
+
 public interface I {
     String SERVER_ROOT = "http://101.251.196.90:8000/FuLiCenterServerV2.0/";
     /** 下拉刷新*/
@@ -53,6 +55,8 @@ public interface I {
     int NEW_GOOD=0;
     int CATEGORY_GOOD=1;
     int CAT_ID=0;
+    String ID ="id" ;
+    String BROADCAST_UPDATE_CART ="update cart";
 
     interface Goods {
         String KEY_RESULT = "result";

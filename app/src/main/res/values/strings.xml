@@ -25,4 +25,5 @@
     <string name="login_fail_noUser">用户不存在</string>
     <string name="user_databases_error">user databases error</string>
     <string name="title_activity_qrcode">QRcodeActivity</string>
+    <string name="no_cart">\"购物车是空的\"</string>
 </resources>

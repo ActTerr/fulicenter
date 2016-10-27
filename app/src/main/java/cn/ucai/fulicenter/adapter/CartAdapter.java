@@ -1,10 +1,13 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -17,6 +20,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.bean.Result2;
 import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
@@ -30,44 +34,16 @@ import cn.ucai.fulicenter.utils.OkHttpUtils;
 public class CartAdapter extends RecyclerView.Adapter {
     Context mContext;
     List<CartBean> mList;
-    boolean isMore;
-    GoodsDetailsBean goods;
-    CartBean carts;
-    int count = 1;
-    int amount;
-    int save;
 
-    boolean isChceked;
+
+
     public CartAdapter(Context context, List<CartBean> list) {
         mContext = context;
-        mList = new ArrayList<>();
-        mList.addAll(list);
+        mList = list;
     }
 
-    public int getAmount() {
-        return amount;
-    }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
 
-    public boolean isMore() {
-        return isMore;
-    }
-
-    public void setMore(boolean more) {
-        isMore = more;
-        notifyDataSetChanged();
-    }
-
-    public int getSave() {
-        return save;
-    }
-
-    public void setSave(int save) {
-        this.save = save;
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -82,81 +58,44 @@ public class CartAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (getItemViewType(position) == I.TYPE_FOOTER) {
-            GoodsAdapter.FooterViewHolder vh = (GoodsAdapter.FooterViewHolder) holder;
-            vh.mTvFooter.setText(getFootString());
-        } else {
-            CartsViewHolder cvh = (CartsViewHolder) holder;
-            carts = mList.get(position);
-            goods = carts.getGoods();
+
+            final CartsViewHolder cvh = (CartsViewHolder) holder;
+            L.e("main", mList.toString());
+            final CartBean carts = mList.get(position);
+            GoodsDetailsBean goods = carts.getGoods();
             L.i("main", goods.toString());
-            ImageLoader.downloadImg(mContext, cvh.ivCartPic, goods.getGoodsThumb());
-            cvh.tvCartName.setText(goods.getGoodsName());
-            cvh.tvCartPrice.setText(goods.getCurrencyPrice());
-            amount += getPrice(goods.getCurrencyPrice());
-            save += getPrice(goods.getPromotePrice()) - getPrice(goods.getCurrencyPrice());
-            if (isChceked) {
-                cvh.ivCartCheck.setImageResource(R.mipmap.checkbox_pressed);
-            } else {
-                cvh.ivCartCheck.setImageResource(R.mipmap.checkbox_normal);
-            }
-            cvh.tvCartAmount.setText("(" + count + ")");
+            if (goods!=null){
+                ImageLoader.downloadImg(mContext, cvh.ivCartPic, goods.getGoodsThumb());
+                cvh.tvCartName.setText(goods.getGoodsName());
+                cvh.tvCartPrice.setText(goods.getCurrencyPrice());
 
-        }
-    }
-
-    private void findgoodsdetail() {
-        int goodsId = carts.getGoodsId();
-        NetDao.findGoodsDetail(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
-            @Override
-            public void onSuccess(GoodsDetailsBean result) {
-                goods = result;
-                Log.i("main", "成功下载商品详情");
             }
 
-            @Override
-            public void onError(String error) {
-                L.i("main", error);
-            }
-        });
+            cvh.ivCartAdd.setTag(position);
+            cvh.tvCartAmount.setText("(" + carts.getCount() + ")");
+            cvh.ivCartCheck.setChecked(carts.isChecked());
+            cvh.ivCartCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    carts.setChecked(isChecked);
+                    mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_CART));
+                }
+            });
 
     }
 
-    private int getFootString() {
-        return isMore ? R.string.load_more : R.string.no_more;
-    }
 
     @Override
     public int getItemCount() {
-        return mList != null ? mList.size() + 1 : 1;
+        return mList != null ? mList.size()  : 0;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == getItemCount() - 1) {
-            return I.TYPE_FOOTER;
-        }
-        return I.TYPE_ITEM;
-    }
+
 
     public void initData(ArrayList<CartBean> list) {
-        if (mList != null) {
-            mList.clear();
-        }
-        mList.addAll(list);
+        mList = list;
         notifyDataSetChanged();
     }
-
-    public void addData(ArrayList<CartBean> list) {
-        mList.addAll(list);
-        notifyDataSetChanged();
-    }
-
-    private int getPrice(String price) {
-        price = price.substring(price.indexOf("￥") + 1);
-        return Integer.valueOf(price);
-    }
-
 
 
     static class FooterViewHolder extends RecyclerView.ViewHolder {
@@ -172,7 +111,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
     class CartsViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_cart_check)
-        ImageView ivCartCheck;
+        CheckBox ivCartCheck;
         @BindView(R.id.iv_cart_pic)
         ImageView ivCartPic;
         @BindView(R.id.tv_cart_name)
@@ -181,6 +120,11 @@ public class CartAdapter extends RecyclerView.Adapter {
         TextView tvCartAmount;
         @BindView(R.id.tv_cart_price)
         TextView tvCartPrice;
+        @BindView(R.id.iv_cart_add)
+        ImageView ivCartAdd;
+        @BindView(R.id.iv_cart_reduce)
+        ImageView ivCartReduce;
+
 
         CartsViewHolder(View view) {
             super(view);
@@ -189,21 +133,74 @@ public class CartAdapter extends RecyclerView.Adapter {
 
         @OnClick({R.id.iv_cart_add, R.id.iv_cart_reduce})
         public void onClick(View view) {
+            final int position= (int) ivCartAdd.getTag();
+            final CartBean cart=mList.get(position);
             switch (view.getId()) {
                 case R.id.iv_cart_add:
-                    count++;
+                    NetDao.updateCartCount(mContext, cart.getId(), cart.getCount()+1, cart.isChecked(), new OkHttpUtils.OnCompleteListener<Result2>() {
+                        @Override
+                        public void onSuccess(Result2 result) {
+                            if (result != null) {
+                                if (result.isSuccess() == true) {
+                                    cart.setCount(cart.getCount()+1);
+                                    mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_CART));
+                                    tvCartAmount.setText("("+cart.getCount()+")");
+                                    Log.e("main", "count++");
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
                     notifyDataSetChanged();
                     break;
                 case R.id.iv_cart_reduce:
-                    count--;
-                    notifyDataSetChanged();
+                    if(cart.getCount()>1){
+                        NetDao.updateCartCount(mContext, cart.getId(), cart.getCount()-1, cart.isChecked(), new OkHttpUtils.OnCompleteListener<Result2>() {
+                            @Override
+                            public void onSuccess(Result2 result) {
+                                if (result != null) {
+                                    if (result.isSuccess() == true) {
+
+                                        Log.e("main", "count--");
+                                        cart.setCount(cart.getCount()-1);
+                                        mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_CART));
+                                        tvCartAmount.setText("("+cart.getCount()+")");
+                                    }
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                    }else {
+                        NetDao.deleteCart(mContext, cart.getId(), new OkHttpUtils.OnCompleteListener<Result2>() {
+                            @Override
+                            public void onSuccess(Result2 result) {
+                                if(result!=null && result.isSuccess()){
+                                    mList.remove(position);
+                                    mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATE_CART));
+                                    notifyDataSetChanged();
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+                    }
+
                     break;
+
             }
         }
-        @OnClick(R.id.iv_cart_check)
-        public void onClick() {
-            isChceked=!isChceked;
-        }
+
 
     }
 }

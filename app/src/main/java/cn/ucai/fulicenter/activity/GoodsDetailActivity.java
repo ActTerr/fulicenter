@@ -194,7 +194,10 @@ public class GoodsDetailActivity extends BaseActivity {
                 NetDao.addCart(mContext, String.valueOf(goodsId), userName, "1", I.ISCHECKED, new OkHttpUtils.OnCompleteListener<Result2>() {
                     @Override
                     public void onSuccess(Result2 result) {
-                        CommonUtils.showShortToast(result.getMsg());
+                        if (result!=null&&result.isSuccess()==true){
+                            CommonUtils.showShortToast("添加购物车成功");
+                        }
+
                     }
 
                     @Override
