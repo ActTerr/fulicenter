@@ -43,7 +43,13 @@ public class CartAdapter extends RecyclerView.Adapter {
     }
 
 
+    public List<CartBean> getmList() {
+        return mList;
+    }
 
+    public void setmList(List<CartBean> mList) {
+        this.mList = mList;
+    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

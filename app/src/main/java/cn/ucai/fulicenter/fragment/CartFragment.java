@@ -55,8 +55,7 @@ public class CartFragment extends BaseFragment {
     RecyclerView mRv;
 
     GoodsDetailsBean goods;
-    int currency;
-    int rank;
+
     cartBroadcastReceiver mReceiver;
     @BindView(R.id.tv_cart_sum_price)
     TextView tvCartSumPrice;
@@ -147,6 +146,8 @@ public class CartFragment extends BaseFragment {
     }
 
     private void setPrice() {
+        int currency=0;
+        int rank=0;
         if (mList != null && mList.size() > 0) {
             for (CartBean c : mList) {
                 if (c.isChecked()) {
