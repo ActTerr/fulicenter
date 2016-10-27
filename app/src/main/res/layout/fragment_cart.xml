@@ -21,7 +21,7 @@
                     android:text="合计:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <EditText
+                <TextView
                     android:id="@+id/et_cart_total"
                     android:textSize="15sp"
                     android:hint="¥1000"
@@ -38,7 +38,7 @@
                     android:text="节省:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-                <EditText
+                <TextView
                     android:id="@+id/et_cart_save"
                     android:hint="¥100"
                     android:layout_width="wrap_content"
@@ -56,8 +56,29 @@
             android:text="购买"
             android:background="@color/holo_red_light"/>
     </RelativeLayout>
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_cart"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl"
+        android:background="@color/list_background"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/tv_refresh"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/now_refresh"
+                android:gravity="center_horizontal"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

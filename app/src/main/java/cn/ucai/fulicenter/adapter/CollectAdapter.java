@@ -123,7 +123,7 @@ public class CollectAdapter extends RecyclerView.Adapter {
                 public void onSuccess(Result2 result) {
                     mList.remove(collects);
                     CommonUtils.showShortToast(result.getMsg());
-                    
+                    notifyDataSetChanged();
                 }
 
                 @Override

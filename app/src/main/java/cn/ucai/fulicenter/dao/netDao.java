@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.CollectBean;
@@ -73,11 +74,11 @@ public class NetDao {
                 .targetClass(NewGoodsBean[].class)
                 .execute(listener);
     }
-    public static void findUser(Context context,String userName,OkHttpUtils.OnCompleteListener<Result> listener){
-        OkHttpUtils<Result> utils=new OkHttpUtils<>(context);
+    public static void findUser(Context context,String userName,OkHttpUtils.OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils=new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_FIND_USER)
                 .addParam(I.User.USER_NAME,userName)
-                .targetClass(Result.class)
+                .targetClass(String.class)
                 .execute(listener);
     }
     public static void UserLogin(Context context,String userName,String passwd,OkHttpUtils.OnCompleteListener<String> listener){
@@ -159,5 +160,18 @@ public class NetDao {
                 .targetClass(Result2.class)
                 .execute(listener);
     }
-
+    public static void findGoodsDetail(Context context,int goodsId,OkHttpUtils.OnCompleteListener<GoodsDetailsBean> listener){
+        OkHttpUtils<GoodsDetailsBean> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
+                .addParam(I.GoodsDetails.KEY_GOODS_ID,String.valueOf(goodsId))
+                .targetClass(GoodsDetailsBean.class)
+                .execute(listener);
+    }
+    public static void downloadCarts(Context context, String userName, OkHttpUtils.OnCompleteListener<CartBean[]> listener){
+        OkHttpUtils<CartBean[]> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_CARTS)
+                .addParam(I.USERNAME,userName)
+                .targetClass(CartBean[].class)
+                .execute(listener);
+    }
 }

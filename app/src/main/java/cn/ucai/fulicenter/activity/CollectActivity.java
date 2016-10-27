@@ -167,10 +167,11 @@ public class CollectActivity extends BaseActivity {
         initData();
 
     }
-    BroadcastReceiver receiver=new BroadcastReceiver() {
+    class updateCollectReceiver extends BroadcastReceiver{
+
         @Override
         public void onReceive(Context context, Intent intent) {
-            intent.getSerializableExtra("");
+
         }
-    };
+    }
 }

@@ -93,4 +93,24 @@ public class UserBean implements Serializable{
                 ", mavatarLastUpdateTime='" + mavatarLastUpdateTime + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserBean userBean = (UserBean) o;
+
+        if (muserName != null ? !muserName.equals(userBean.muserName) : userBean.muserName != null)
+            return false;
+        return mavatarLastUpdateTime != null ? mavatarLastUpdateTime.equals(userBean.mavatarLastUpdateTime) : userBean.mavatarLastUpdateTime == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = muserName != null ? muserName.hashCode() : 0;
+        result = 31 * result + (mavatarLastUpdateTime != null ? mavatarLastUpdateTime.hashCode() : 0);
+        return result;
+    }
 }
