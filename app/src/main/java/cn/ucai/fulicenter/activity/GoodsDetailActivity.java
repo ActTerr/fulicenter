@@ -25,6 +25,7 @@ import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.application.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.AlbumsBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -57,7 +58,7 @@ public class GoodsDetailActivity extends BaseActivity {
     FlowIndicator mIndicator;
     @BindView(R.id.wv_good_brief)
     WebView mWvGoodBrief;
-
+    CartBean cart;
     int goodsId;
     GoodsDetailActivity mContext;
     @BindView(R.id.layout_image)
@@ -70,7 +71,8 @@ public class GoodsDetailActivity extends BaseActivity {
     boolean isCollect = false;
     @BindView(R.id.iv_good_collect)
     ImageView ivGoodCollect;
-
+    @BindView(R.id.iv_good_cart)
+    ImageView ivgoodCart;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -85,14 +87,13 @@ public class GoodsDetailActivity extends BaseActivity {
         ButterKnife.bind(this);
         NewGoodsBean goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
         CollectBean collects = (CollectBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_ID);
-        GoodsDetailsBean goodsdetail= (GoodsDetailsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_NAME);
+        cart= (CartBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_NAME);
         if (goods != null) {
             goodsId = goods.getGoodsId();
         } else if(collects!=null){
             goodsId=collects.getGoodsId();
-
         }else {
-            goodsId=goodsdetail.getGoodsId();
+            goodsId=cart.getGoods().getGoodsId();
         }
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         userName = sp.getString("name", "fail");
@@ -195,22 +196,48 @@ public class GoodsDetailActivity extends BaseActivity {
                 }
                 break;
             case R.id.iv_good_cart:
-                NetDao.addCart(mContext, String.valueOf(goodsId), userName, "1", I.ISCHECKED, new OkHttpUtils.OnCompleteListener<Result2>() {
-                    @Override
-                    public void onSuccess(Result2 result) {
-                        if (result!=null&&result.isSuccess()==true){
-                            CommonUtils.showShortToast("添加购物车成功");
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        CommonUtils.showShortToast(error);
-                    }
-                });
+                UserBean u=FuLiCenterApplication.getUser();
+                if(u!=null){
+                    addCart();
+                }
                 break;
         }
+    }
+
+//    private void cancelCart() {
+//        NetDao.deleteCart(mContext, cart.getId(), new OkHttpUtils.OnCompleteListener<Result2>() {
+//            @Override
+//            public void onSuccess(Result2 result) {
+//                if (result!=null&&result.isSuccess()==true){
+//                    CommonUtils.showShortToast("成功从购物车移除");
+//                    isAdd=false;
+//                }else {
+//                    isAdd=true;
+//                }
+//                updateGoodsStatus();
+//            }
+//
+//            @Override
+//            public void onError(String error) {
+//
+//            }
+//        });
+//    }
+
+    private void addCart() {
+        NetDao.addCart(mContext, String.valueOf(goodsId), userName, "1", I.ISCHECKED, new OkHttpUtils.OnCompleteListener<Result2>() {
+            @Override
+            public void onSuccess(Result2 result) {
+                if (result!=null&&result.isSuccess()==true) {
+                    CommonUtils.showShortToast("添加购物车成功");
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                CommonUtils.showShortToast(error);
+            }
+        });
     }
 
     private void showShare() {

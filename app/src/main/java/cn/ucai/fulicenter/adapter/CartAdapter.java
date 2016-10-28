@@ -197,8 +197,7 @@ public class CartAdapter extends RecyclerView.Adapter {
 
                     break;
                 case R.id.iv_cart_pic:
-                    GoodsDetailsBean goods=cart.getGoods();
-                    MFGT.gotoGoodsDetailsActivity(mContext,goods);
+                    MFGT.gotoGoodsDetailsActivity(mContext,cart);
                     break;
             }
         }

@@ -13,6 +13,7 @@ import cn.ucai.fulicenter.activity.GoodsDetailActivity;
 import cn.ucai.fulicenter.activity.MainActivity;
 import cn.ucai.fulicenter.activity.UserLoginActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
@@ -83,10 +84,10 @@ public class MFGT {
         context.startActivityForResult(intent,code);
         context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
-    public static void gotoGoodsDetailsActivity(Context context,GoodsDetailsBean goods){
+    public static void gotoGoodsDetailsActivity(Context context,CartBean cart){
         Intent intent=new Intent();
         intent.setClass(context,GoodsDetailActivity.class);
-        intent.putExtra(I.GoodsDetails.KEY_GOODS_NAME,goods);
+        intent.putExtra(I.GoodsDetails.KEY_GOODS_NAME,cart);
         startActivity(context,intent);
     }
 }
