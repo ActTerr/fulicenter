@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             int count = intent.getIntExtra("count", 0);
-            MainActivity.this.count.setText(count);
+           // MainActivity.this.count.setText(count);
         }
     }
 
