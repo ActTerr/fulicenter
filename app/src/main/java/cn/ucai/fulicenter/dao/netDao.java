@@ -190,4 +190,12 @@ public class NetDao {
                 .targetClass(Result2.class)
                 .execute(listener);
     }
+    public static void Pay(Context context,int query,OkHttpUtils.OnCompleteListener<String> listener){
+        OkHttpUtils<String> utils=new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_PAY)
+                .addParam(I.PAYPARAMS,String.valueOf(query))
+                .post()
+                .targetClass(String.class)
+                .execute(listener);
+    }
 }

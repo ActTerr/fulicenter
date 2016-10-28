@@ -59,6 +59,7 @@ public interface I {
     String BROADCAST_UPDATE_CART ="update cart";
     int REQUEST_CODE_LOGIN_CART = 3;
     String BROADCAST_UPDATE_COUNT ="update count" ;
+    String PAYPARAMS ="payParams" ;
 
     interface Goods {
         String KEY_RESULT = "result";
