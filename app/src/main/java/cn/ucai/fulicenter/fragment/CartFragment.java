@@ -29,6 +29,7 @@ import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.UserBean;
 import cn.ucai.fulicenter.dao.NetDao;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.MFGT;
@@ -66,6 +67,7 @@ public class CartFragment extends BaseFragment {
     @BindView(R.id.layout_cart)
     RelativeLayout layoutCart;
 
+    String cartIds="";
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
@@ -148,9 +150,11 @@ public class CartFragment extends BaseFragment {
     private void setPrice() {
         int currency=0;
         int rank=0;
+        cartIds="";
         if (mList != null && mList.size() > 0) {
             for (CartBean c : mList) {
                 if (c.isChecked()) {
+                    cartIds+=c.getId()+",";
                     goods = c.getGoods();
                     Log.i("main", goods.getCurrencyPrice());
                     currency += getPrice(goods.getCurrencyPrice()) * c.getCount();
@@ -162,6 +166,7 @@ public class CartFragment extends BaseFragment {
             tvCartSumPrice.setText("合计:¥" + rank);
             tvCartSavePrice.setText("节省:¥" + (currency - rank));
         } else {
+            cartIds="";
             tvCartSumPrice.setText("合计:¥0");
             tvCartSavePrice.setText("节省:¥0");
         }
@@ -195,7 +200,15 @@ public class CartFragment extends BaseFragment {
 
     @OnClick(R.id.tv_cart_buy)
     public void onClick() {
-        MFGT.startActivity(mContext, new Intent(mContext, CartChildActivity.class));
+        if(cartIds!=null&&cartIds.length()>0){
+            Intent intent=new Intent();
+            intent.putExtra("cartIds",cartIds);
+            intent.setClass(mContext,CartChildActivity.class);
+            MFGT.startActivity(mContext,intent);
+        }else {
+            CommonUtils.showShortToast("没有选中的商品");
+        }
+
     }
 
     class cartBroadcastReceiver extends BroadcastReceiver {
@@ -218,5 +231,13 @@ public class CartFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         downloadCart();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Intent intent=new Intent(I.BROADCAST_UPDATE_COUNT);
+        intent.putExtra("count",mList.size());
+        mContext.sendBroadcast(intent);
     }
 }

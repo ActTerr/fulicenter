@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioButton;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,6 +38,8 @@ public class MainActivity extends BaseActivity {
     RadioButton rbCategory;
     @BindView(R.id.rbPersonal)
     RadioButton rbPersonal;
+    @BindView(R.id.tvCartHint)
+    TextView count;
     int index;
     RadioButton[] btns;
     NewGoodsFragment newGoodsFragment;
@@ -43,7 +49,7 @@ public class MainActivity extends BaseActivity {
     CartFragment cartFragment;
     Fragment[] fragments;
     int currentIndex;
-
+    cartCountReceiver mRecevier;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -51,6 +57,14 @@ public class MainActivity extends BaseActivity {
         L.i("MainActivity onCreate");
         super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    protected void setListener() {
+        super.setListener();
+        IntentFilter filter=new IntentFilter(I.BROADCAST_UPDATE_COUNT);
+        mRecevier=new cartCountReceiver();
+        this.registerReceiver(mRecevier,filter);
     }
 
     private void initFragment() {
@@ -163,5 +177,19 @@ public class MainActivity extends BaseActivity {
         }else if(requestCode==I.REQUEST_CODE_LOGIN_CART&&FuLiCenterApplication.getUser()!=null){
             index = 3;
         }
+    }
+    class cartCountReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count = intent.getIntExtra("count", 0);
+            MainActivity.this.count.setText(count);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.unregisterReceiver(mRecevier);
     }
 }

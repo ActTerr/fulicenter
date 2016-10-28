@@ -2,6 +2,8 @@ package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,11 +16,14 @@ public class CartChildActivity extends BaseActivity {
     EditText etCartName;
     @BindView(R.id.et_cart_phone)
     EditText etCartPhone;
-    @BindView(R.id.et_cart_city)
-    EditText etCartCity;
     @BindView(R.id.et_street_child)
     EditText etStreetChild;
+    @BindView(R.id.et_cart_city)
+    Spinner etCartCity;
+    @BindView(R.id.pay_amount)
+    TextView payAmount;
 
+    String cartIds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -35,6 +40,8 @@ public class CartChildActivity extends BaseActivity {
     @Override
     protected void initData() {
         super.initData();
+        cartIds=getIntent().getStringExtra("cartIds");
+
 
     }
 
@@ -47,4 +54,6 @@ public class CartChildActivity extends BaseActivity {
     public void onClick() {
 
     }
+
+
 }
