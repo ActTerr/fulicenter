@@ -57,6 +57,7 @@ public interface I {
     int CAT_ID=0;
     String ID ="id" ;
     String BROADCAST_UPDATE_CART ="update cart";
+    int REQUEST_CODE_LOGIN_CART = 3;
 
     interface Goods {
         String KEY_RESULT = "result";

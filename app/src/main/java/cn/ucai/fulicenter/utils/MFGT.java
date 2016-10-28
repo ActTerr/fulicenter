@@ -15,6 +15,7 @@ import cn.ucai.fulicenter.activity.UserLoginActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CollectBean;
+import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 
 
@@ -68,10 +69,24 @@ public class MFGT {
         intent.putExtra(I.CategoryChild.ID,list);
         startActivity(context,intent);
     }
-    public static void gotoLoginActivity(Context context){
+    public static void gotoLoginActivity(Activity context){
         Intent intent=new Intent();
         intent.setClass(context, UserLoginActivity.class);
+        startActivityForResult(context,intent,I.REQUEST_CODE_LOGIN);
+    }
+    public static void gotoLoginActivityFromCart(Activity context){
+        Intent intent=new Intent();
+        intent.setClass(context, UserLoginActivity.class);
+        startActivityForResult(context,intent,I.REQUEST_CODE_LOGIN_CART);
+    }
+    public static void startActivityForResult(Activity context,Intent intent,int code){
+        context.startActivityForResult(intent,code);
+        context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+    }
+    public static void gotoGoodsDetailsActivity(Context context,GoodsDetailsBean goods){
+        Intent intent=new Intent();
+        intent.setClass(context,GoodsDetailActivity.class);
+        intent.putExtra(I.GoodsDetails.KEY_GOODS_NAME,goods);
         startActivity(context,intent);
     }
-
 }

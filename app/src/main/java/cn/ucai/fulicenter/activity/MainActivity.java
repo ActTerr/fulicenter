@@ -120,7 +120,12 @@ public class MainActivity extends BaseActivity {
                 index = 2;
                 break;
             case R.id.rbCart:
-                index = 3;
+                if(FuLiCenterApplication.getUser()==null){
+                    MFGT.gotoLoginActivityFromCart(this);
+                }else {
+                    index = 3;
+                }
+
                 break;
             case R.id.rbPersonal:
                 if (FuLiCenterApplication.getUser() == null) {
@@ -155,6 +160,8 @@ public class MainActivity extends BaseActivity {
         if (requestCode == I.REQUEST_CODE_LOGIN && FuLiCenterApplication.getUser() != null) {
             L.e("main","success get result");
             index = 4;
+        }else if(requestCode==I.REQUEST_CODE_LOGIN_CART&&FuLiCenterApplication.getUser()!=null){
+            index = 3;
         }
     }
 }

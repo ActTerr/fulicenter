@@ -57,8 +57,7 @@ public class GoodsDetailActivity extends BaseActivity {
     FlowIndicator mIndicator;
     @BindView(R.id.wv_good_brief)
     WebView mWvGoodBrief;
-    NewGoodsBean goods;
-    CollectBean collects;
+
     int goodsId;
     GoodsDetailActivity mContext;
     @BindView(R.id.layout_image)
@@ -71,6 +70,7 @@ public class GoodsDetailActivity extends BaseActivity {
     boolean isCollect = false;
     @BindView(R.id.iv_good_collect)
     ImageView ivGoodCollect;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -83,12 +83,16 @@ public class GoodsDetailActivity extends BaseActivity {
         //setContentView(R.layout.activity_goods_detail);
         setContentView(R.layout.activity_goods_detail);
         ButterKnife.bind(this);
-        goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
-        collects = (CollectBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_ID);
+        NewGoodsBean goods = (NewGoodsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS);
+        CollectBean collects = (CollectBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_ID);
+        GoodsDetailsBean goodsdetail= (GoodsDetailsBean) getIntent().getSerializableExtra(I.GoodsDetails.KEY_GOODS_NAME);
         if (goods != null) {
             goodsId = goods.getGoodsId();
-        } else {
-            goodsId = collects.getGoodsId();
+        } else if(collects!=null){
+            goodsId=collects.getGoodsId();
+
+        }else {
+            goodsId=goodsdetail.getGoodsId();
         }
         SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
         userName = sp.getString("name", "fail");

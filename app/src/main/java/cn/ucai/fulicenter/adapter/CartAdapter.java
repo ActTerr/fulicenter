@@ -25,6 +25,7 @@ import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 
 /**
@@ -42,14 +43,6 @@ public class CartAdapter extends RecyclerView.Adapter {
         mList = list;
     }
 
-
-    public List<CartBean> getmList() {
-        return mList;
-    }
-
-    public void setmList(List<CartBean> mList) {
-        this.mList = mList;
-    }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -137,7 +130,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             ButterKnife.bind(this, view);
         }
 
-        @OnClick({R.id.iv_cart_add, R.id.iv_cart_reduce})
+        @OnClick({R.id.iv_cart_add, R.id.iv_cart_reduce,R.id.iv_cart_pic})
         public void onClick(View view) {
             final int position= (int) ivCartAdd.getTag();
             final CartBean cart=mList.get(position);
@@ -203,7 +196,10 @@ public class CartAdapter extends RecyclerView.Adapter {
                     }
 
                     break;
-
+                case R.id.iv_cart_pic:
+                    GoodsDetailsBean goods=cart.getGoods();
+                    MFGT.gotoGoodsDetailsActivity(mContext,goods);
+                    break;
             }
         }
 

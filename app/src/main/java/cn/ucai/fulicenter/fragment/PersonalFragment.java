@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ import cn.ucai.fulicenter.utils.ResultUtils;
  */
 
 public class PersonalFragment extends BaseFragment {
-    Context mContext;
+    Activity mContext;
     @BindView(R.id.iv_personal_avatar)
     ImageView ivPersonalAvatar;
     @BindView(R.id.tv_personal_name)
@@ -45,7 +46,7 @@ public class PersonalFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_personal, container, false);
-        mContext = getContext();
+        mContext = (Activity) getContext();
 
         ButterKnife.bind(this, view);
         super.onCreateView(inflater, container, savedInstanceState);
@@ -61,6 +62,7 @@ public class PersonalFragment extends BaseFragment {
         super.initData();
         UserBean user = FuLiCenterApplication.getUser();
         if (user == null) {
+
             MFGT.gotoLoginActivity(mContext);
         } else {
             ImageLoader.setAvatar(mContext, ImageLoader.getAvatarUrl(user), ivPersonalAvatar);
