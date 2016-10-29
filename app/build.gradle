@@ -19,16 +19,8 @@ android {
 
     }
 }
-buildscript {
-    repositories {
-        jcenter()
-    }
-}
-allprojects {
-    repositories {
-        jcenter()
-    }
-}
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -62,9 +54,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
     compile project(':lib:bdwallet_pay_sdk')
     compile project(':lib:pingpp_one')
-    compile 'com.pingxx:pingpp-core:2.1.+' //必须添加
-    compile 'com.pingxx:pingpp-alipay:2.1.+' //使用支付宝时添加
-    compile 'com.pingxx:pingpp-upacp:2.1.+' //使用银联支付时添加
-    compile 'com.pingxx:pingpp-wxpay:2.1.+' //使用微信支付时添加
-    compile 'com.pingxx:pingpp-bfb-sdk:2.1.+' // 使用百付宝时添加
+
 }

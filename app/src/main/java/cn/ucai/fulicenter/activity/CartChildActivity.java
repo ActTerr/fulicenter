@@ -1,9 +1,12 @@
 package cn.ucai.fulicenter.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -13,7 +16,6 @@ import com.pingplusplus.android.PingppLog;
 import com.pingplusplus.libone.PaymentHandler;
 import com.pingplusplus.libone.PingppOne;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +35,7 @@ import cn.ucai.fulicenter.dao.NetDao;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 import cn.ucai.fulicenter.utils.OkHttpUtils;
 
 public class CartChildActivity extends BaseActivity implements PaymentHandler {
@@ -50,9 +53,9 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
 
     String cartIds;
     int rankPrice;
-    Context mContext;
+    Activity mContext;
     ArrayList<CartBean> mList;
-    String[] ids=new String []{};
+    String[] ids = new String[]{};
     UserBean user;
     private static String URL = "http://218.244.151.190/demo/charge";
     private static final String TAG = CartChildActivity.class.getSimpleName();
@@ -86,9 +89,9 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
         super.initData();
         cartIds = getIntent().getStringExtra("cartIds");
         user = FuLiCenterApplication.getUser();
-        L.e(TAG,"cartIds="+cartIds);
-        if(cartIds==null || cartIds.equals("")
-                || user==null){
+        L.e(TAG, "cartIds=" + cartIds);
+        if (cartIds == null || cartIds.equals("")
+                || user == null) {
             finish();
         }
         ids = cartIds.split(",");
@@ -108,7 +111,6 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
                     } else {
                         mList.addAll(list);
                         sumPrice();
-                        payAmount.setText("合计：¥" + rankPrice);
                     }
                 }
 
@@ -127,41 +129,49 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
         super.setListener();
     }
 
-    @OnClick(R.id.btn_cart_child)
-    public void onClick() {
-        String name = etCartName.getText().toString();
-        if (TextUtils.isEmpty(name)) {
-            etCartName.setError("name not null");
-            etCartName.requestFocus();
-            return;
+    @OnClick({R.id.btn_cart_child, R.id.btn_back})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_cart_child:
+                String name = etCartName.getText().toString();
+                if (TextUtils.isEmpty(name)) {
+                    etCartName.setError("name not null");
+                    etCartName.requestFocus();
+                    return;
+                }
+                String phone = etCartPhone.getText().toString();
+                if (TextUtils.isEmpty(phone)) {
+                    etCartPhone.setError("phone not null");
+                    etCartPhone.requestFocus();
+                    return;
+                }
+                if (!phone.matches("[\\d]{11}")) {
+                    etCartPhone.setError("is not phone number");
+                    etCartPhone.requestFocus();
+                    return;
+                }
+                String area = etCartCity.getSelectedItem().toString();
+                if (TextUtils.isEmpty(area)) {
+                    Toast.makeText(mContext, "city not null", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                String street = etStreetChild.getText().toString();
+                if (TextUtils.isEmpty(street)) {
+                    etStreetChild.setError("street not null");
+                    etStreetChild.requestFocus();
+                    return;
+                }
+                gotoStatements();
+                break;
+            case R.id.btn_back:
+                MFGT.finish(this);
         }
-        String phone = etCartPhone.getText().toString();
-        if (TextUtils.isEmpty(phone)) {
-            etCartPhone.setError("phone not null");
-            etCartPhone.requestFocus();
-            return;
-        }
-        if (!phone.matches("[\\d]{11}")) {
-            etCartPhone.setError("is not phone number");
-            etCartPhone.requestFocus();
-            return;
-        }
-        String area = etCartCity.getSelectedItem().toString();
-        if (TextUtils.isEmpty(area)) {
-            Toast.makeText(mContext, "city not null", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        String street = etStreetChild.getText().toString();
-        if (TextUtils.isEmpty(street)) {
-            etStreetChild.setError("street not null");
-            etStreetChild.requestFocus();
-            return;
-        }
-        gotoStatements();
+
 
     }
 
     private void gotoStatements() {
+        L.e(TAG, "进入支付状态");
         // 产生个订单号
         String orderNo = new SimpleDateFormat("yyyyMMddhhmmss")
                 .format(new Date());
@@ -181,7 +191,7 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
 
         try {
             bill.put("order_no", orderNo);
-            bill.put("amount", rankPrice*100);
+            bill.put("amount", rankPrice * 100);
             bill.put("extras", extras);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -192,7 +202,7 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
     }
 
     private void sumPrice() {
-        rankPrice=0;
+        rankPrice = 0;
         if (mList != null && mList.size() > 0) {
             for (CartBean c : mList) {
                 for (String id : ids) {
@@ -202,7 +212,7 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
                 }
             }
         }
-        payAmount.setText("合计¥:"+rankPrice);
+        payAmount.setText("合计¥:" + rankPrice);
     }
 
     private int getPrice(String price) {
@@ -212,63 +222,57 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
 
 
     @Override
-    public void handlePaymentResult(Intent intent) {
-        new PaymentHandler() {
-
-            // 返回支付结果
-            // @param data
-
-            @Override
-            public void handlePaymentResult(Intent data) {
-                if (data != null) {
-
-                    // result：支付结果信息
-                    // code：支付结果码
-                    //-2:用户自定义错误
-                    //-1：失败
-                    // 0：取消
-                    // 1：成功
-                    // 2:应用内快捷支付支付结果
-                    L.e(TAG, "code=" + data.getExtras().getInt("code"));
-                    if (data.getExtras().getInt("code") != 2) {
-                        PingppLog.d(data.getExtras().getString("result") + "  " + data.getExtras().getInt("code"));
-                    } else {
-                        String result = data.getStringExtra("result");
-                        try {
-                            JSONObject resultJson = new JSONObject(result);
-                            if (resultJson.has("error")) {
-                                result = resultJson.optJSONObject("error").toString();
-                            } else if (resultJson.has("success")) {
-                                result = resultJson.optJSONObject("success").toString();
-                            }
-                            PingppLog.d("result::" + result);
-                            L.e(TAG, result);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+    public void handlePaymentResult(Intent data) {
+        if (data != null) {
+            L.e(TAG, "处理支付结果");
+            // result：支付结果信息
+            // code：支付结果码
+            //-2:用户自定义错误
+            //-1：失败
+            // 0：取消
+            // 1：成功
+            // 2:应用内快捷支付支付结果
+            L.e(TAG, "code=" + data.getExtras().getInt("code"));
+            if (data.getExtras().getInt("code") != 2) {
+                PingppLog.d(data.getExtras().getString("result") + "  " + data.getExtras().getInt("code"));
+            } else {
+                String result = data.getStringExtra("result");
+                try {
+                    JSONObject resultJson = new JSONObject(result);
+                    if (resultJson.has("error")) {
+                        result = resultJson.optJSONObject("error").toString();
+                    } else if (resultJson.has("success")) {
+                        result = resultJson.optJSONObject("success").toString();
                     }
-                    int resultCode = data.getExtras().getInt("code");
-                    switch (resultCode){
-                        case 1:
-                            paySuccess();
-                            CommonUtils.showLongToast(R.string.pingpp_title_activity_pay_sucessed);
-                            break;
-                        case -1:
-                            CommonUtils.showLongToast(R.string.pingpp_pay_failed);
-                            finish();
-                            break;
-                    }
+                    PingppLog.d("result::" + result);
+                    L.e(TAG, result);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-        };
+            int resultCode = data.getExtras().getInt("code");
+            switch (resultCode) {
+                case 1:
+                    paySuccess();
+                    Log.e("main", "进入支付成功分支");
+                    CommonUtils.showLongToast(R.string.pingpp_title_activity_pay_sucessed);
+                    break;
+                case -1:
+                    CommonUtils.showLongToast(R.string.pingpp_pay_failed);
+                    Log.e("main", "进入支付失败分支");
+                    finish();
+                    break;
+            }
+        }
     }
 
+
     private void paySuccess() {
-        for(String id :ids){
+        for (String id : ids) {
             NetDao.deleteCart(mContext, Integer.valueOf(id), new OkHttpUtils.OnCompleteListener<Result2>() {
                 @Override
                 public void onSuccess(Result2 result) {
-
+                    L.e(TAG, "result" + result);
                 }
 
                 @Override
@@ -279,4 +283,6 @@ public class CartChildActivity extends BaseActivity implements PaymentHandler {
         }
         finish();
     }
+
+
 }

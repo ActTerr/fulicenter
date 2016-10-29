@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
+            android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/back"/>
@@ -21,11 +22,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
+
     <LinearLayout
         android:layout_below="@+id/pay_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_pressed"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,13 +45,19 @@
             android:id="@+id/et_cart_name"
             android:textSize="20sp"
             android:hint="张三"
+            android:text="aa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_pressed"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <TextView
             android:textSize="20sp"
             android:text="手机号码:"
@@ -56,9 +68,14 @@
             android:textSize="20sp"
             android:inputType="phone"
             android:hint="13101111111"
+            android:text="13101111111"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_pressed"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -75,6 +92,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_pressed"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,9 +109,15 @@
             android:id="@+id/et_street_child"
             android:textSize="20sp"
             android:hint="实行大街"
+            android:text="aaafa"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
     </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray_pressed"/>
     </LinearLayout>
     <RelativeLayout
         android:layout_alignParentBottom="true"
