@@ -101,8 +101,8 @@ public class PersonalChildActivity extends BaseActivity {
                 CommonUtils.showShortToast("不能修改用户名");
                 break;
             case R.id.btn_exit:
+                SharePrefrenceUtils.getInstance(mContext).removeUser();
                 FuLiCenterApplication.setUser(null);
-                FuLiCenterApplication.setUserName(null);
                 MFGT.gotoLoginActivity(mContext);
                 break;
             case R.id.iv_per_child_nick:
@@ -169,6 +169,10 @@ public class PersonalChildActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode!=RESULT_OK){
+            return;
+        }
         mOnSetAvatarListener.setAvatar(requestCode,data,ivPerAvatar);
         if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
             Log.i("main","执行更新头像");

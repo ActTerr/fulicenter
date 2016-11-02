@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
@@ -12,6 +13,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.Result;
 
 public class ResultUtils {
@@ -121,6 +124,50 @@ public class ResultUtils {
             e.printStackTrace();
         }
         return  null;
+    }
+    public static ArrayList<CartBean> getCartformJson(String jsonStr){
+        ArrayList<CartBean> list=null;
+        try {
+            if(jsonStr==null || jsonStr.isEmpty() || jsonStr.length()<3)return null;
+            JSONArray array = new JSONArray(jsonStr);
+            if (array != null) {
+             list = new ArrayList<CartBean>();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject jsonObject = array.getJSONObject(i);
+                    CartBean cart=new CartBean();
+                    if(!jsonObject.isNull("id")) {
+                        cart.setId(jsonObject.getInt("id"));}
+                    if(!jsonObject.isNull("checked")){
+                        cart.setChecked(false);
+                    }
+                    if (!jsonObject.isNull("userName")){
+                        cart.setUserName(jsonObject.getString("userName"));
+                    }
+                    if (!jsonObject.isNull("count")){
+                        cart.setCount(jsonObject.getInt("count"));
+                    }
+                    if (!jsonObject.isNull("goodsId")){
+                        cart.setGoodsId(jsonObject.getInt("goodsId"));
+                    }
+                    if (!jsonObject.isNull("goods")){
+                        try {
+                            String date = URLDecoder.decode(jsonObject.getString("goods"), I.UTF_8);
+                            GoodsDetailsBean goods = new Gson().fromJson(date, GoodsDetailsBean.class);
+                            cart.setGoods(goods);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                        list.add(cart);
+
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

@@ -62,7 +62,7 @@ public class UserLoginActivity extends BaseActivity {
         }else {
             L.e("main","进入首选项分支");
             SharedPreferences sp=getSharedPreferences("login",MODE_PRIVATE);
-            String name=sp.getString("name","noData");
+            String name=sp.getString("name","");
             etLoginName.setText(name);
         }
 
