@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity {
 
     private void initFragment() {
         fragments = new Fragment[5];
-        newGoodsFragment = new NewGoodsFragment();
+        newGoodsFragment = new NewGoodsFragment(this);
         boutiqueFragment = new BoutiqueFragment();
         categoryFragment = new CategoryFragment();
         pensonalFragment = new PersonalFragment();

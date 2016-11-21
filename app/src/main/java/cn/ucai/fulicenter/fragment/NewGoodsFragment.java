@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.fragment;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,18 +38,29 @@ public class NewGoodsFragment extends Fragment {
     @BindView(R.id.srl)
     SwipeRefreshLayout mSrl;
 
-    MainActivity mContext;
+    Activity mContext;
     GoodsAdapter mAdapter;
     ArrayList<NewGoodsBean> mList;
     int pageId = 1;
     GridLayoutManager glm;
+    int goodsId=0;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+    public NewGoodsFragment(int id, Activity context){
+        this.goodsId=id;
+        this.mContext=context;
+    }
+    public NewGoodsFragment(Activity context){
+        this.mContext=context;
 
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View layout = inflater.inflate(R.layout.fragment_goods, container, false);
         ButterKnife.bind(this, layout);
-        mContext = (MainActivity) getContext();
         mList = new ArrayList<>();
         mAdapter = new GoodsAdapter(mContext,mList);
         initView();
@@ -75,7 +87,8 @@ public class NewGoodsFragment extends Fragment {
     }
 
     private void downloadNewGoods(final int action) {
-        NetDao.downloadNewGoods(mContext,I.CAT_ID, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+
+        NetDao.downloadNewGoods(mContext,goodsId==0?I.CAT_ID:goodsId, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 mSrl.setRefreshing(false);
