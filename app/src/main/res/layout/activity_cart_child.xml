@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="cn.ucai.fulicenter.activity.CartChildActivity">
+    tools:context="cn.ucai.fulicenter.controller.activity.CartChildActivity">
     <RelativeLayout
         android:id="@+id/pay_title"
         android:layout_width="match_parent"

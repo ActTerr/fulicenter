@@ -28,23 +28,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".controller.activity.MainActivity" />
+        <activity android:name=".controller.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.GoodsDetailActivity" />
-        <activity android:name=".activity.BoutiqueChildActivity" />
-        <activity android:name=".activity.CategoryChildActivity" />
-        <activity android:name=".activity.UserLoginActivity" />
-        <activity android:name=".activity.RegisterActivity" />
-        <activity android:name=".activity.CartChildActivity" />
-        <activity android:name=".activity.PersonalChildActivity" />
-        <activity android:name=".activity.QRcodeActivity"/>
-        <activity android:name=".activity.CollectActivity"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        <activity android:name=".controller.activity.GoodsDetailActivity" />
+        <activity android:name=".controller.activity.BoutiqueChildActivity" />
+        <activity android:name=".controller.activity.CategoryChildActivity" />
+        <activity android:name=".controller.activity.UserLoginActivity" />
+        <activity android:name=".controller.activity.RegisterActivity" />
+        <activity android:name=".controller.activity.CartChildActivity" />
+        <activity android:name=".controller.activity.PersonalChildActivity" />
+        <activity android:name=".controller.activity.QRcodeActivity"/>
+        <activity android:name=".controller.activity.CollectActivity"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
 
 
